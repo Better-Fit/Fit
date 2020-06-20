@@ -12,6 +12,7 @@
   "dependencies": {
     "@eva-design/eva": "^2.0.0",
     "@react-native-firebase/app": "^7.2.1",
+    "@react-native-firebase/functions": "^7.1.4",
     "@ui-kitten/components": "^5.0.0",
     "react": "16.11.0",
     "react-native": "0.62.2",

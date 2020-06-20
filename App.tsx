@@ -21,13 +21,32 @@ import {
   Button,
 } from '@ui-kitten/components';
 import auth from '@react-native-firebase/auth';
+import functions from '@react-native-firebase/functions';
 
 declare const global: {HermesInternal: null | {}};
 
 const App = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+
+  const [joinCode, setJoinCode] = React.useState('');
+
+  const [team, setTeam] = React.useState('');
+
   const [error, setError] = React.useState('');
+
+  React.useEffect(() => {
+    listenForAuth();
+  }, []);
+
+  const listenForAuth = () => {
+    auth().onAuthStateChanged((userState) => {
+      console.log(userState);
+    });
+  };
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
@@ -41,13 +60,13 @@ const App = () => {
             backgroundColor: 'coral',
             height: 100,
           }}>
-          <Text category="h1">Sign Up</Text>
+          <Text category="h1">Sign In</Text>
         </Layout>
         <Layout
           style={{
-            width: '100%',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            width: '100%',
             height: 100,
             backgroundColor: 'purple',
           }}>
@@ -57,13 +76,14 @@ const App = () => {
             onChangeText={(text) => setEmail(text)}
           />
         </Layout>
+
         <Layout
           style={{
-            width: '100%',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            width: '100%',
             height: 100,
-            backgroundColor: 'yellow',
+            backgroundColor: 'purple',
           }}>
           <Input
             placeholder="Password"
@@ -73,34 +93,105 @@ const App = () => {
         </Layout>
 
         <Layout
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
-            width: '100%',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            width: '100%',
             height: 100,
-            backgroundColor: 'yellow',
+            backgroundColor: 'purple',
           }}>
           <Button
+            style={{width: '90%'}}
             onPress={() => {
               auth()
                 .createUserWithEmailAndPassword(email, password)
-                .catch(setError);
+                .then((resp) => {
+                  console.log(resp);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             }}>
             Sign Up
           </Button>
         </Layout>
 
         <Layout
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
-            width: '100%',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            width: '100%',
             height: 100,
-            backgroundColor: 'yellow',
+            backgroundColor: 'purple',
           }}>
-          <Text category="h3">{error.code}</Text>
+          <Input
+            placeholder="Team Name"
+            value={team}
+            onChangeText={(text) => setTeam(text)}
+          />
+        </Layout>
+
+        <Layout
+          style={{
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            width: '100%',
+            height: 100,
+            backgroundColor: 'purple',
+          }}>
+          <Button
+            style={{width: '90%'}}
+            onPress={() => {
+              functions()
+                .httpsCallable('createTeam')({name: team})
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }}>
+            Create Team
+          </Button>
+        </Layout>
+
+        <Layout
+          style={{
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            width: '100%',
+            height: 100,
+            backgroundColor: 'purple',
+          }}>
+          <Input
+            placeholder="Join Code"
+            value={joinCode}
+            onChangeText={(text) => setJoinCode(text)}
+          />
+        </Layout>
+
+        <Layout
+          style={{
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            width: '100%',
+            height: 100,
+            backgroundColor: 'purple',
+          }}>
+          <Button
+            style={{width: '90%'}}
+            onPress={() => {
+              functions()
+                .httpsCallable('joinTeam')({joinCode: joinCode})
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }}>
+            Join Team
+          </Button>
         </Layout>
       </Layout>
     </ApplicationProvider>

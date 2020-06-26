@@ -19,7 +19,10 @@ export const SignUp = ({navigation}) => {
     navigation.goBack();
   };
   const navigateSignUpTwo = () => {
-    navigation.navigate('SignUpTwo');
+    navigation.navigate('SignUpTwo', {
+      firstName,
+      lastName,
+    });
   };
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />

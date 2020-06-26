@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {StyleSheet, Text, SafeAreaView} from 'react-native';
 import {
@@ -8,34 +9,14 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
 
-const JoinTeam = ({navigation}) => {
+const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
 
-  const navigateToDashboard = () => {
-      navigation.navigate('Dashboard');
-  }
-
-  const checkJoinCode = (joincode) => {
-      // check join code func
-  }
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      backgroundColor: 'lightblue',
-    },
-    labelView: {
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-  });
-
   const next = () => {
-      navigation.navigate('Dashboard');
-  }
+    navigation.navigate('Dashboard');
+  };
 
   return (
     <>

@@ -9,15 +9,22 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-export const SignUpTwo = ({navigation}) => {
+export const SignUpTwo = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const next = () => {
-    navigation.navigate('JoinTeam');
+  const next = async () => {
+    AuthService.signUp(email, password, route.params)
+      .then(() => {
+        navigation.navigate('JoinTeam');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const navigateBack = () => {

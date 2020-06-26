@@ -12,14 +12,16 @@ import {
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-export const SignInOne = ({navigation}) => {
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
+export const SignIn = ({navigation}) => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const next = () => {
+    navigation.navigate('Dashboard');
+  };
+
   const navigateBack = () => {
     navigation.goBack();
-  };
-  const navigateSignInTwo = () => {
-    navigation.navigate('SignInTwo');
   };
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
@@ -43,31 +45,32 @@ export const SignInOne = ({navigation}) => {
           }}>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              textContentType="name"
+              textContentType="emailAddress"
               size="large"
-              value={firstName}
-              label="First Name"
-              placeholder="Steve"
-              onChangeText={(nextValue) => setFirstName(nextValue)}
+              value={email}
+              label="Email"
+              placeholder="stevefell@gmail.com"
+              onChangeText={(nextValue) => setEmail(nextValue)}
             />
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              textContentType="name"
+              secureTextEntry
+              textContentType="password"
               size="large"
-              value={lastName}
-              label="Last Name"
-              placeholder="Fell"
-              onChangeText={(nextValue) => setLastName(nextValue)}
+              value={password}
+              label="Password"
+              placeholder="ArcticMonkeys69"
+              onChangeText={(nextValue) => setPassword(nextValue)}
             />
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
-              onPress={navigateSignInTwo}
               appearance="outline"
               size="large"
-              status="primary">
-              Next
+              status="primary"
+              onPress={next}>
+              Sign In
             </Button>
           </Layout>
         </Layout>

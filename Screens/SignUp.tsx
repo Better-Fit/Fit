@@ -12,11 +12,14 @@ import {
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-export const SignInTwo = ({navigation}) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+export const SignUp = ({navigation}) => {
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
   const navigateBack = () => {
     navigation.goBack();
+  };
+  const navigateSignUpTwo = () => {
+    navigation.navigate('SignUpTwo');
   };
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
@@ -40,27 +43,30 @@ export const SignInTwo = ({navigation}) => {
           }}>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              textContentType="emailAddress"
+              textContentType="name"
               size="large"
-              value={email}
-              label="Email"
-              placeholder="stevefell@gmail.com"
-              onChangeText={(nextValue) => setEmail(nextValue)}
+              value={firstName}
+              label="First Name"
+              placeholder="Steve"
+              onChangeText={(nextValue) => setFirstName(nextValue)}
             />
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              secureTextEntry
-              textContentType="password"
+              textContentType="name"
               size="large"
-              value={password}
-              label="Password"
-              placeholder="ArcticMonkeys69"
-              onChangeText={(nextValue) => setPassword(nextValue)}
+              value={lastName}
+              label="Last Name"
+              placeholder="Fell"
+              onChangeText={(nextValue) => setLastName(nextValue)}
             />
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
-            <Button appearance="outline" size="large" status="primary">
+            <Button
+              onPress={navigateSignUpTwo}
+              appearance="outline"
+              size="large"
+              status="primary">
               Next
             </Button>
           </Layout>

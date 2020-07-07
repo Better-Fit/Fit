@@ -41,7 +41,7 @@ export const Landing = ({navigation}) => {
             <Button accessoryRight={SignInIcon} onPress={navigateSignIn}>SIGN IN</Button>
           </Layout>
           <Layout style={{width: '50%', height: 60}}>
-            <Button onPress={navigateSignUpOne}>JOIN YOUR TEAM</Button>
+            <Button onPress={navigateSignUpOne}>SIGN UP</Button>
           </Layout>
         </Layout>
       </SafeAreaView>

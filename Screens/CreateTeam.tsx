@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
-import {StyleSheet, Text, SafeAreaView} from 'react-native';
+import React from 'react';
+import {SafeAreaView} from 'react-native';
 import {
   Input,
   Icon,
@@ -10,18 +10,27 @@ import {
   Button,
 } from '@ui-kitten/components';
 
-const JoinTeam = ({navigation, route}) => {
-  const [joinCode, setJoinCode] = React.useState('');
+const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-  const next = () => {
-    navigation.navigate('Dashboard');
+const CreateTeam = ({navigation}) => {
+  const [name, setName] = React.useState('');
+  const navigateBack = () => {
+    navigation.goBack();
   };
+
+  const BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+  );
 
   return (
     <>
-      {/* <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} /> */}
+      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <TopNavigation title="Entry Code" alignment="center" />
+        <TopNavigation
+          title="Back"
+          alignment="start"
+          accessoryLeft={BackAction}
+        />
         <Layout
           style={{
             flex: 2,
@@ -31,21 +40,21 @@ const JoinTeam = ({navigation, route}) => {
           }}>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              keyboardType="numeric"
+              textContentType="name"
               size="large"
-              value={joinCode}
-              label="Join Code"
-              placeholder="43201"
-              onChangeText={(nextValue) => setJoinCode(nextValue)}
+              value={name}
+              label="Team Name"
+              placeholder="Steve"
+              onChangeText={(nextValue) => setName(nextValue)}
             />
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
+              //   onPress={navigateSignUpTwo}
               appearance="outline"
               size="large"
-              status="primary"
-              onPress={next}>
-              Finish
+              status="primary">
+              Create
             </Button>
           </Layout>
         </Layout>
@@ -62,4 +71,4 @@ const JoinTeam = ({navigation, route}) => {
   );
 };
 
-export default JoinTeam;
+export default CreateTeam;

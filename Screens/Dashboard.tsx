@@ -22,9 +22,6 @@ const Dashboard = (props) => {
       alignItems: 'center',
       height: '20%',
       width: '90%',
-      borderWidth: 1,
-      borderRadius: 8,
-      borderColor: 'coral',
     },
     bannerText: {
       fontSize: 18,
@@ -41,8 +38,6 @@ const Dashboard = (props) => {
       alignItems: 'center',
       height: '90%',
       width: '100%',
-      borderWidth: 1,
-      borderColor: '#55D6C2'
     },
   });
 
@@ -50,13 +45,13 @@ const Dashboard = (props) => {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <Layout style={styles.container}>
         <Layout style={styles.bannerView}>
-          <Text style={styles.bannerText}>No More Quizzes to Display </Text>
+          <Text style={styles.bannerText}>No Current Surveys 🎉</Text>
         </Layout>
-        <Layout style={styles.historyView}>
+        {/* <Layout style={styles.historyView}>
           <Layout style={styles.history}>
             <Text>History has come</Text>
           </Layout>
-        </Layout>
+        </Layout> */}
       </Layout>
     </SafeAreaView>
   );

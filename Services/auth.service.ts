@@ -14,7 +14,7 @@ class AuthService {
       .createUserWithEmailAndPassword(email, password)
       .then((resp) => {
         console.log(resp);
-        this.update(nameData);
+        AuthService.update(nameData);
       })
       .catch((error) => {
         console.log(error);
@@ -29,6 +29,28 @@ class AuthService {
       })
       .catch((error) => {
         console.log(error);
+      });
+  }
+
+  static async joinTeam(joinCode: string) {
+    functions()
+      .httpsCallable('joinTeam')({joinCode: joinCode})
+      .then((res) => {
+        console.log('🌈', res);
+      })
+      .catch((error) => {
+        console.log('🛑', error);
+      });
+  }
+
+  static async getSurveys() {
+    functions()
+      .httpsCallable('getSurveys')()
+      .then((value) => {
+        console.log('🌈', value);
+      })
+      .catch((error) => {
+        console.log('🛑', error);
       });
   }
 }

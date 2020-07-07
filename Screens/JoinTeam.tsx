@@ -14,6 +14,8 @@ const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
 
   const next = () => {
+    AuthService.joinTeam(joinCode);
+    AuthService.getSurveys();
     navigation.navigate('Dashboard');
   };
 

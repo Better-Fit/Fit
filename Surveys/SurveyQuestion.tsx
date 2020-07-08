@@ -14,6 +14,7 @@ import {
 import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
 import {Surveys} from '../Templates/Surveys';
+import SurveyAnswer from '../Models/SurveyAnswer';
 
 export const SurveyQuestion = ({navigation, route}) => {
   const surveyLength = () => {
@@ -21,7 +22,10 @@ export const SurveyQuestion = ({navigation, route}) => {
   };
 
   const next = (response) => {
-    route.params.addResponse(response);
+    route.params.addResponse(
+      new SurveyAnswer(route.params.survey.question, 'string', response),
+      route.params.index,
+    );
     if (route.params.index + 1 === surveyLength()) {
       console.log('Made it to Narnia');
     } else {

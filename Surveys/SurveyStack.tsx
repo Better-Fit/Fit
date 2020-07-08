@@ -5,12 +5,12 @@ import {SurveyQuestion} from './SurveyQuestion';
 
 const {Navigator, Screen} = createStackNavigator();
 
-const responses = [];
+const responses = {};
 
 export const SurveyStack = ({surveyType}) => {
-  const addResponse = (response) => {
-    responses.push(response);
-    console.log('RESPONSE ARRAY', responses);
+  const addResponse = (response, index) => {
+    responses[index] = response;
+    console.log('RESPONSE OBJECT', responses);
   };
   return (
     <Navigator>

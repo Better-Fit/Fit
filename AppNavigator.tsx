@@ -13,7 +13,7 @@ import CheckCoach from './Screens/CheckCoach';
 const {Navigator, Screen} = createStackNavigator();
 
 const AuthNavigator = () => (
-  <Navigator headerMode="none" initialRouteName="CreateTeam">
+  <Navigator headerMode="none">
     <Screen name="Landing" component={Landing} />
     <Screen name="SignIn" component={SignIn} />
     <Screen name="SignUpOne" component={SignUp} />

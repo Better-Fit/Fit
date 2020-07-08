@@ -9,11 +9,13 @@ import Dashboard from './Screens/Dashboard';
 import {SignIn} from './Screens/SignIn';
 import CreateTeam from './Screens/CreateTeam';
 import CheckCoach from './Screens/CheckCoach';
+import {SurveyQuestion} from './Surveys/SurveyQuestion';
+import {SurveyStack} from './Surveys/SurveyStack';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const AuthNavigator = () => (
-  <Navigator headerMode="none" initialRouteName="CreateTeam">
+  <Navigator headerMode="none" initialRouteName="SurveyQuestion">
     <Screen name="Landing" component={Landing} />
     <Screen name="SignIn" component={SignIn} />
     <Screen name="SignUpOne" component={SignUp} />
@@ -25,6 +27,7 @@ const AuthNavigator = () => (
       options={{gestureEnabled: false}}
     />
     <Screen name="CreateTeam" component={CreateTeam} />
+    <Screen name="SurveyQuestion" component={SurveyQuestion} />
     <Screen
       name="Dashboard"
       component={Dashboard}
@@ -35,6 +38,6 @@ const AuthNavigator = () => (
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <AuthNavigator />
+    <SurveyStack surveyType="pre" />
   </NavigationContainer>
 );

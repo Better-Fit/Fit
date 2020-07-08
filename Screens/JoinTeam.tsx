@@ -9,13 +9,15 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
 
 const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
 
   const next = () => {
-    AuthService.joinTeam(joinCode);
-    AuthService.getSurveys();
+    AuthService.joinTeam(joinCode).then((val) => {
+      AuthService.submitSurvey();
+    });
     navigation.navigate('Dashboard');
   };
 

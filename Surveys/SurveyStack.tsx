@@ -10,10 +10,16 @@ const responses = {};
 export const SurveyStack = ({surveyType}) => {
   const addResponse = (response, index) => {
     responses[index] = response;
-    console.log('RESPONSE OBJECT', responses);
   };
+  const submitSurvey = () => {
+    for (const key in responses) {
+      let surveyAnswers = [];
+      surveyAnswers.push(responses[key]);
+    }
+  };
+  const surveyLength = Surveys[surveyType].length;
   return (
-    <Navigator>
+    <Navigator headerMode="none">
       {Surveys[surveyType].map((survey, index) => (
         <Screen
           name={`${index}`}
@@ -22,8 +28,10 @@ export const SurveyStack = ({surveyType}) => {
             survey: survey,
             surveyType: surveyType,
             index: index,
+            surveyLength: surveyLength,
             addResponse: addResponse,
           }}
+          key={index}
         />
       ))}
     </Navigator>

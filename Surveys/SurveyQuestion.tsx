@@ -13,21 +13,26 @@ import {
 } from '@ui-kitten/components';
 import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
-import {Surveys} from '../Templates/Surveys';
 import SurveyAnswer from '../Models/SurveyAnswer';
 
 export const SurveyQuestion = ({navigation, route}) => {
-  const surveyLength = () => {
-    return Surveys[route.params.surveyType].length;
+  const navigateBack = () => {
+    navigation.goBack();
   };
+  const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+
+  const BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+  );
 
   const next = (response) => {
     route.params.addResponse(
       new SurveyAnswer(route.params.survey.question, 'string', response),
       route.params.index,
     );
-    if (route.params.index + 1 === surveyLength()) {
-      console.log('Made it to Narnia');
+    if (route.params.index + 1 === route.params.surveyLength) {
+      route.params.submitSurvey();
+      console.log('Survey Submitted 😀');
     } else {
       navigation.navigate(`${route.params.index + 1}`);
     }
@@ -36,17 +41,29 @@ export const SurveyQuestion = ({navigation, route}) => {
   const checkedType =
     route.params.surveyType === 'pre' ? Feelings : Difficulties;
   return (
-    <Layout style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-      <QuestionHeader question={route.params.survey.question} />
-      {checkedType.map((entry, key) => (
-        <Rating
-          color={entry.color}
-          difficulty={entry.level}
-          message={entry.message}
-          next={next}
+    <>
+      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
+      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <TopNavigation
+          title="Back"
+          alignment="start"
+          accessoryLeft={BackAction}
         />
-      ))}
-    </Layout>
+        <Layout
+          style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <QuestionHeader question={route.params.survey.question} />
+          {checkedType.map((entry, index) => (
+            <Rating
+              color={entry.color}
+              difficulty={entry.level}
+              message={entry.message}
+              next={next}
+              key={index}
+            />
+          ))}
+        </Layout>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -56,7 +73,7 @@ const QuestionHeader = (props) => {
       padding: '2%',
     },
     questionText: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: 'bold',
     },
   });

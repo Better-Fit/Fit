@@ -21,4 +21,22 @@ export const Surveys = {
       type: 'string',
     },
   ],
+  post: [
+    {
+      question: 'How hard was the session on your legs?',
+      type: 'numeric',
+    },
+    {
+      question: 'How hard was the session on your breathing?',
+      type: 'numeric',
+    },
+    {
+      question: 'How technically/tactically demanding was the session?',
+      type: 'numeric',
+    },
+    {
+      question: 'Overall, how hard was the session?',
+      type: 'numeric',
+    },
+  ],
 };

@@ -3,6 +3,7 @@ import {StyleSheet, Text, SafeAreaView} from 'react-native';
 import {Layout, Button} from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 import {getItemFromCache} from '../Utils/cache.util';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Dashboard = ({navigation}) => {
   const styles = StyleSheet.create({
@@ -47,17 +48,29 @@ const Dashboard = ({navigation}) => {
   const currentDay = new Date().getDate();
 
   React.useEffect(() => {
+    checkSurveys();
+  });
+
+  const checkSurveys = () => {
     getItemFromCache('pre').then((lastSurveyDay) => {
+      console.log('PRE CACHE', lastSurveyDay);
       if (lastSurveyDay === currentDay) {
         setPre(true);
       }
     });
     getItemFromCache('post').then((lastSurveyDay) => {
+      console.log('POST CACHE', lastSurveyDay);
       if (lastSurveyDay === currentDay) {
         setPost(true);
       }
     });
-  }, []);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      checkSurveys();
+    }, []),
+  );
 
   const noPreSurvey = (
     <Text style={styles.bannerText}>

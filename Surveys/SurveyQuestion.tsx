@@ -57,15 +57,19 @@ export const SurveyQuestion = ({navigation, route}) => {
         <Layout
           style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <QuestionHeader question={route.params.survey.question} />
-          {checkedType.map((entry, index) => (
-            <Rating
-              color={entry.color}
-              difficulty={entry.level}
-              message={entry.message}
-              next={next}
-              key={index}
-            />
-          ))}
+          {route.params.survey.type == 'numeric' ? (
+            checkedType.map((entry, index) => (
+              <Rating
+                color={entry.color}
+                difficulty={entry.level}
+                message={entry.message}
+                next={next}
+                key={index}
+              />
+            ))
+          ) : (
+            <FormSubmission next={next} />
+          )}
         </Layout>
       </SafeAreaView>
     </>
@@ -87,6 +91,32 @@ const QuestionHeader = (props) => {
     <Layout style={styles.questionContainer}>
       <Text style={styles.questionText}>{props.question}</Text>
     </Layout>
+  );
+};
+
+const FormSubmission = (props) => {
+  const [formSubmission, setFormSubmission] = React.useState('');
+  return (
+    <>
+      <Layout style={{height: 90, width: '80%'}}>
+        <Input
+          textContentType="none"
+          size="large"
+          value={formSubmission}
+          placeholder="Great!"
+          onChangeText={(nextValue) => setFormSubmission(nextValue)}
+        />
+      </Layout>
+      <Layout style={{height: 90, width: '80%'}}>
+        <Button
+          onPress={() => props.next(formSubmission)}
+          appearance="outline"
+          size="large"
+          status="primary">
+          Next
+        </Button>
+      </Layout>
+    </>
   );
 };
 

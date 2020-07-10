@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native';
 import {Layout, Spinner} from '@ui-kitten/components';
 import auth from '@react-native-firebase/auth';
 import AuthService from '../Services/auth.service';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const Loading = ({navigation}) => {
   const [initializing, setInitializing] = React.useState(true);
@@ -11,6 +12,7 @@ export const Loading = ({navigation}) => {
 
   const onAuthStateChanged = (user) => {
     // AuthService.signOut();
+    // AsyncStorage.clear().then(() => console.log('titties up'));
     setAuthenticatedUser(user);
     console.log(initializing);
     if (initializing) {

@@ -14,10 +14,6 @@ import {
 const SignInIcon = (props) => <Icon {...props} name="log-in-outline" />;
 
 export const Landing = ({navigation}) => {
-  const navigateDetails = () => {
-    navigation.navigate('Details');
-  };
-
   const navigateSignUpOne = () => {
     navigation.navigate('SignUpOne');
   };

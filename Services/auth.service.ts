@@ -73,6 +73,23 @@ class AuthService {
   static async signOut() {
     return AuthService.authInstance.signOut();
   }
+
+  static async getTeam() {
+    return functions()
+      .httpsCallable('getTeam')()
+      .then((res) => res.data)
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  static async waitForAuth(authenticated: () => void) {
+    AuthService.authInstance.onAuthStateChanged((user) => {
+      if (user != null) {
+        authenticated();
+      }
+    });
+  }
 }
 
 export default AuthService;

@@ -6,38 +6,51 @@ import {SignUp} from './Screens/SignUp';
 import {SignUpTwo} from './Screens/SignUpTwo';
 import JoinTeam from './Screens/JoinTeam';
 import Dashboard from './Screens/Dashboard';
+import CoachDashboard from './Screens/CoachDashboard';
 import {SignIn} from './Screens/SignIn';
 import CreateTeam from './Screens/CreateTeam';
-import CheckCoach from './Screens/CheckCoach';
-import {SurveyQuestion} from './Surveys/SurveyQuestion';
 import {SurveyStack} from './Surveys/SurveyStack';
+import {Loading} from './Screens/Loading';
 
 const {Navigator, Screen} = createStackNavigator();
 
 const AuthNavigator = () => (
-  <Navigator headerMode="none" initialRouteName="SurveyQuestion">
+  <Navigator headerMode="none" initialRouteName="Loading">
+    <Screen
+      name="Loading"
+      component={Loading}
+      options={{gestureEnabled: false}}
+    />
     <Screen name="Landing" component={Landing} />
     <Screen name="SignIn" component={SignIn} />
     <Screen name="SignUpOne" component={SignUp} />
     <Screen name="SignUpTwo" component={SignUpTwo} />
-    <Screen name="CheckCoach" component={CheckCoach} />
     <Screen
       name="JoinTeam"
       component={JoinTeam}
       options={{gestureEnabled: false}}
     />
-    <Screen name="CreateTeam" component={CreateTeam} />
-    <Screen name="SurveyQuestion" component={SurveyQuestion} />
+    <Screen
+      name="CreateTeam"
+      component={CreateTeam}
+      options={{gestureEnabled: false}}
+    />
     <Screen
       name="Dashboard"
       component={Dashboard}
       options={{gestureEnabled: false}}
     />
+    <Screen
+      name="CoachDashboard"
+      component={CoachDashboard}
+      options={{gestureEnabled: false}}
+    />
+    <Screen name="SurveyStack" component={SurveyStack} />
   </Navigator>
 );
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <SurveyStack surveyType="pre" />
+    <AuthNavigator />
   </NavigationContainer>
 );

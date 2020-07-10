@@ -14,6 +14,7 @@ import {
 import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
 import SurveyAnswer from '../Models/SurveyAnswer';
+import {storeItemInCache} from '../Utils/cache.util';
 
 export const SurveyQuestion = ({navigation, route}) => {
   const navigateBack = () => {
@@ -32,6 +33,10 @@ export const SurveyQuestion = ({navigation, route}) => {
     );
     if (route.params.index + 1 === route.params.surveyLength) {
       route.params.submitSurvey();
+      storeItemInCache(
+        `${route.params.surveyType}`,
+        new Date().getDate(),
+      ).then(() => navigation.navigate('Dashboard'));
       console.log('Survey Submitted 😀');
     } else {
       navigation.navigate(`${route.params.index + 1}`);

@@ -9,28 +9,22 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
-
-const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+import AuthService from '../Services/auth.service';
 
 const CreateTeam = ({navigation}) => {
   const [name, setName] = React.useState('');
-  const navigateBack = () => {
-    navigation.goBack();
-  };
 
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
+  const next = () => {
+    AuthService.createTeam(name).then(() =>
+      navigation.navigate('CoachDashboard'),
+    );
+  };
 
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <TopNavigation
-          title="Back"
-          alignment="start"
-          accessoryLeft={BackAction}
-        />
+        <TopNavigation title="Create Team" alignment="center" />
         <Layout
           style={{
             flex: 2,
@@ -50,7 +44,7 @@ const CreateTeam = ({navigation}) => {
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
-              //   onPress={navigateSignUpTwo}
+              onPress={next}
               appearance="outline"
               size="large"
               status="primary">

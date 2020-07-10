@@ -18,11 +18,13 @@ export const SignUp = ({navigation}) => {
   const navigateBack = () => {
     navigation.goBack();
   };
-  const navigateSignUpTwo = () => {
-    navigation.navigate('SignUpTwo', {
-      firstName,
-      lastName,
-    });
+  const next = () => {
+    if (firstName && lastName) {
+      navigation.navigate('SignUpTwo', {
+        firstName,
+        lastName,
+      });
+    }
   };
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
@@ -66,7 +68,7 @@ export const SignUp = ({navigation}) => {
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
-              onPress={navigateSignUpTwo}
+              onPress={next}
               appearance="outline"
               size="large"
               status="primary">

@@ -15,10 +15,9 @@ const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
 
   const next = () => {
-    AuthService.joinTeam(joinCode).then((val) => {
-      AuthService.submitSurvey();
+    AuthService.joinTeam(joinCode).then(() => {
+      navigation.navigate('Dashboard');
     });
-    navigation.navigate('Dashboard');
   };
 
   return (
@@ -49,7 +48,7 @@ const JoinTeam = ({navigation, route}) => {
               size="large"
               status="primary"
               onPress={next}>
-              Finish
+              Join
             </Button>
           </Layout>
         </Layout>

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,23 +8,41 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Text,
+  Toggle,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
+const useToggleState = (initialState = false) => {
+  const [checked, setChecked] = React.useState(initialState);
+  const onCheckedChange = (isChecked) => {
+    setChecked(isChecked);
+  };
+  return {checked, onChange: onCheckedChange};
+};
+
 export const SignUpTwo = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const primaryToggleState = useToggleState();
 
   const next = async () => {
-    AuthService.signUp(email, password, route.params)
-      .then(() => {
-        navigation.navigate('JoinTeam');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (email && password) {
+      AuthService.signUp(
+        email,
+        password,
+        route.params,
+        primaryToggleState.checked,
+      )
+        .then(() => {
+          navigation.navigate('Loading');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const navigateBack = () => {
@@ -33,6 +51,12 @@ export const SignUpTwo = ({navigation, route}) => {
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
+
+  const styles = StyleSheet.create({
+    toggle: {
+      margin: 2,
+    },
+  });
 
   return (
     <>
@@ -70,6 +94,24 @@ export const SignUpTwo = ({navigation, route}) => {
               placeholder="ArcticMonkeys69"
               onChangeText={(nextValue) => setPassword(nextValue)}
             />
+          </Layout>
+          <Layout
+            style={{
+              height: 75,
+              width: '80%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Layout style={{justifyContent: 'center'}}>
+              <Text category="h6">Are you a coach?</Text>
+            </Layout>
+            <Layout style={{justifyContent: 'center'}}>
+              <Toggle
+                style={styles.toggle}
+                status="primary"
+                {...primaryToggleState}
+              />
+            </Layout>
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button

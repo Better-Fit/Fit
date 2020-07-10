@@ -21,7 +21,11 @@ const AuthNavigator = () => (
       component={Loading}
       options={{gestureEnabled: false}}
     />
-    <Screen name="Landing" component={Landing} />
+    <Screen
+      name="Landing"
+      component={Landing}
+      options={{gestureEnabled: false}}
+    />
     <Screen name="SignIn" component={SignIn} />
     <Screen name="SignUpOne" component={SignUp} />
     <Screen name="SignUpTwo" component={SignUpTwo} />

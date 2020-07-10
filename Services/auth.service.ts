@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import functions from '@react-native-firebase/functions';
-import SurveyAnswer from '../Models/SurveyAnswer';
 import SurveySubmission from '../Models/SurveySubmission';
+import Team from '../Models/Team';
 
 // functions().useFunctionsEmulator('http://localhost:3000');
 
@@ -54,6 +54,12 @@ class AuthService {
       .catch((error) => {
         console.log('🛑', error);
       });
+  }
+
+  static async getTeam() {
+    return functions()
+      .httpsCallable('getTeam')()
+      .then((res) => res.data as Team);
   }
 }
 

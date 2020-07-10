@@ -15,10 +15,26 @@ const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
 
   const next = () => {
-    AuthService.joinTeam(joinCode).then(() => {
-      navigation.navigate('Dashboard');
-    });
+    if (joinCode) {
+      AuthService.joinTeam(joinCode).then(() => {
+        navigation.navigate('Dashboard');
+      });
+    }
   };
+
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
 
   return (
     <>
@@ -27,7 +43,7 @@ const JoinTeam = ({navigation, route}) => {
         <TopNavigation title="Entry Code" alignment="center" />
         <Layout
           style={{
-            flex: 2,
+            flex: 1,
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
@@ -45,21 +61,14 @@ const JoinTeam = ({navigation, route}) => {
           <Layout style={{height: 90, width: '80%'}}>
             <Button
               appearance="outline"
-              size="large"
+              style={styles.buttonStyle}
+              size="giant"
               status="primary"
               onPress={next}>
-              Join
+              Join 🏃‍♂️
             </Button>
           </Layout>
         </Layout>
-        <Layout
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
       </SafeAreaView>
     </>
   );

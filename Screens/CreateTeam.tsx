@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {
   Input,
   Icon,
@@ -19,6 +19,20 @@ const CreateTeam = ({navigation}) => {
       navigation.navigate('CoachDashboard'),
     );
   };
+
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
 
   return (
     <>
@@ -46,9 +60,10 @@ const CreateTeam = ({navigation}) => {
             <Button
               onPress={next}
               appearance="outline"
-              size="large"
+              style={styles.buttonStyle}
+              size="giant"
               status="primary">
-              Create
+              Create 🛠
             </Button>
           </Layout>
         </Layout>

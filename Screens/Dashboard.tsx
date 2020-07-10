@@ -22,24 +22,23 @@ const Dashboard = ({navigation}) => {
     bannerText: {
       fontSize: 18,
       color: 'darkgrey',
-    },
-    historyView: {
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      height: '65%',
-      width: '90%',
-    },
-    history: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '90%',
-      width: '100%',
+      paddingVertical: '5%',
     },
     surveyButton: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       width: '75%',
-      marginVertical: '2%',
+    },
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
     },
   });
 
@@ -53,13 +52,11 @@ const Dashboard = ({navigation}) => {
 
   const checkSurveys = () => {
     getItemFromCache('pre').then((lastSurveyDay) => {
-      console.log('PRE CACHE', lastSurveyDay);
       if (lastSurveyDay === currentDay) {
         setPre(true);
       }
     });
     getItemFromCache('post').then((lastSurveyDay) => {
-      console.log('POST CACHE', lastSurveyDay);
       if (lastSurveyDay === currentDay) {
         setPost(true);
       }
@@ -86,7 +83,8 @@ const Dashboard = ({navigation}) => {
 
   const preSurvey = (
     <Button
-      style={styles.surveyButton}
+      style={styles.buttonStyle}
+      size="giant"
       appearance="outline"
       status="primary"
       onPress={() =>
@@ -94,13 +92,14 @@ const Dashboard = ({navigation}) => {
           surveyType: 'pre',
         })
       }>
-      Pre-Training Survey
+      Pre-Training Survey 📝
     </Button>
   );
 
   const postSurvey = (
     <Button
-      style={styles.surveyButton}
+      style={styles.buttonStyle}
+      size="giant"
       appearance="outline"
       status="primary"
       onPress={() =>
@@ -108,17 +107,18 @@ const Dashboard = ({navigation}) => {
           surveyType: 'post',
         })
       }>
-      Post-Training Survey
+      Post-Training Survey 📝
     </Button>
   );
 
   const signOutButton = (
     <Button
-      style={styles.surveyButton}
+      style={styles.buttonStyle}
+      size="giant"
       appearance="outline"
       status="primary"
       onPress={() => AuthService.signOut()}>
-      Sign Out
+      Sign Out 👋
     </Button>
   );
 
@@ -128,9 +128,13 @@ const Dashboard = ({navigation}) => {
         <Text style={styles.bannerText}>Your Surveys 📊</Text>
       </Layout>
       <Layout style={styles.container}>
-        {pre ? noPreSurvey : preSurvey}
-        {post ? noPostSurvey : postSurvey}
-        {signOutButton}
+        <Layout style={{width: '75%', height: 100}}>
+          {pre ? noPreSurvey : preSurvey}
+        </Layout>
+        <Layout style={{width: '75%', height: 100}}>
+          {post ? noPostSurvey : postSurvey}
+        </Layout>
+        <Layout style={{width: '75%', height: 100}}>{signOutButton}</Layout>
       </Layout>
     </SafeAreaView>
   );

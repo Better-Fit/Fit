@@ -15,6 +15,7 @@ import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
 import SurveyAnswer from '../Models/SurveyAnswer';
 import {storeItemInCache} from '../Utils/cache.util';
+import {resolvePreset} from '@babel/core';
 
 export const SurveyQuestion = ({navigation, route}) => {
   const navigateBack = () => {
@@ -96,24 +97,38 @@ const QuestionHeader = (props) => {
 
 const FormSubmission = (props) => {
   const [formSubmission, setFormSubmission] = React.useState('');
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
   return (
     <>
-      <Layout style={{height: 90, width: '80%'}}>
+      <Layout style={{height: 90, width: '75%'}}>
         <Input
           textContentType="none"
           size="large"
           value={formSubmission}
-          placeholder="Great!"
+          placeholder="Response"
           onChangeText={(nextValue) => setFormSubmission(nextValue)}
         />
       </Layout>
-      <Layout style={{height: 90, width: '80%'}}>
+      <Layout style={{width: '75%'}}>
         <Button
           onPress={() => props.next(formSubmission)}
+          style={styles.buttonStyle}
           appearance="outline"
-          size="large"
+          size="giant"
           status="primary">
-          Next
+          💨 Next
         </Button>
       </Layout>
     </>
@@ -161,19 +176,66 @@ const Rating = (props) => {
       fontSize: 16,
       fontWeight: 'bold',
     },
+    buttonStyle: {
+      backgroundColor: props.color,
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      width: '75%',
+      marginVertical: '1%',
+    },
   });
+
+  const d = props.difficulty;
+
+  const emoji =
+    d === 1
+      ? '🥳'
+      : d === 2
+      ? '😁'
+      : d === 3
+      ? '😃'
+      : d === 4
+      ? '😊'
+      : d === 5
+      ? '🙂'
+      : d === 6
+      ? '🙃'
+      : d === 7
+      ? '😐'
+      : d === 8
+      ? '😪'
+      : d === 9
+      ? '🥵'
+      : d === 10
+      ? '🤬'
+      : '';
+
   return (
-    <Layout style={styles.ratingBox}>
-      <TouchableOpacity onPress={() => props.next(props.difficulty)}>
-        <Layout style={styles.innerRatingBox}>
-          <Layout style={styles.ratingNumberBox}>
-            <Text style={styles.ratingNumberMessage}>{props.difficulty}</Text>
-          </Layout>
-          <Layout style={styles.ratingMessageBox}>
-            <Text style={styles.ratingMessageMessage}>{props.message}</Text>
-          </Layout>
-        </Layout>
-      </TouchableOpacity>
-    </Layout>
+    <Button
+      style={styles.buttonStyle}
+      size="large"
+      appearance="outline"
+      status="control"
+      onPress={() => props.next(props.difficulty)}>
+      {props.message}
+    </Button>
+    // <Layout style={styles.ratingBox}>
+    //   <TouchableOpacity onPress={() => props.next(props.difficulty)}>
+    //     <Layout style={styles.innerRatingBox}>
+    //       <Layout style={styles.ratingNumberBox}>
+    //         <Text style={styles.ratingNumberMessage}>{props.difficulty}</Text>
+    //       </Layout>
+    //       <Layout style={styles.ratingMessageBox}>
+    //         <Text style={styles.ratingMessageMessage}>{props.message}</Text>
+    //       </Layout>
+    //     </Layout>
+    //   </TouchableOpacity>
+    // </Layout>
   );
 };

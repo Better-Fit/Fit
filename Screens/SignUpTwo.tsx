@@ -56,6 +56,17 @@ export const SignUpTwo = ({navigation, route}) => {
     toggle: {
       margin: 2,
     },
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
   });
 
   return (
@@ -114,12 +125,13 @@ export const SignUpTwo = ({navigation, route}) => {
             </Layout>
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
-            <Button
+          <Button
+              onPress={next}
               appearance="outline"
-              size="large"
-              status="primary"
-              onPress={next}>
-              Next
+              size="giant"
+              style={styles.buttonStyle}
+              status="primary">
+              💨 Next
             </Button>
           </Layout>
         </Layout>

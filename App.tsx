@@ -5,6 +5,7 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import AppNavigator from './AppNavigator';
 import AppContextProvider from './Contexts/app.context';
 import {NavigationContainer} from '@react-navigation/native';
+import FlashMessage from 'react-native-flash-message';
 
 export default () => (
   <>
@@ -16,5 +17,6 @@ export default () => (
         </NavigationContainer>
       </AppContextProvider>
     </ApplicationProvider>
+    <FlashMessage position="top" />
   </>
 );

@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import functions from '@react-native-firebase/functions';
-import SurveyAnswer from '../Models/SurveyAnswer';
 import SurveySubmission from '../Models/SurveySubmission';
+import Team from '../Models/Team';
 
 // functions().useFunctionsEmulator('http://localhost:3000');
 
@@ -42,7 +42,7 @@ class AuthService {
 
   static async joinTeam(joinCode: string) {
     return functions()
-      .httpsCallable('joinTeam')({joinCode: joinCode})
+      .httpsCallable('joinTeam')({ joinCode: joinCode })
       .then((res) => {
         console.log('🌈', res);
       })
@@ -53,7 +53,7 @@ class AuthService {
 
   static async createTeam(name: string) {
     return functions()
-      .httpsCallable('createTeam')({name: name})
+      .httpsCallable('createTeam')({ name: name })
       .catch((error) => {
         console.log('🛑', error);
       });
@@ -74,21 +74,18 @@ class AuthService {
     return AuthService.authInstance.signOut();
   }
 
-  static async getTeam() {
-    return functions()
-      .httpsCallable('getTeam')()
-      .then((res) => res.data)
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   static async waitForAuth(authenticated: () => void) {
     AuthService.authInstance.onAuthStateChanged((user) => {
       if (user != null) {
         authenticated();
       }
     });
+  }
+
+  static async getTeam() {
+    return functions()
+      .httpsCallable('getTeam')()
+      .then((res) => res.data as Team);
   }
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {StyleSheet, Text, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,14 +8,26 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Text,
+  Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 
+const LoadingIndicator = (props) => (
+  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <Spinner size="small" />
+  </View>
+);
+
 const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Join 🏃‍♂️';
 
   const next = () => {
     if (joinCode) {
+      setLoading(true);
       AuthService.joinTeam(joinCode).then(() => {
         navigation.navigate('Dashboard');
       });
@@ -65,7 +77,7 @@ const JoinTeam = ({navigation, route}) => {
               size="giant"
               status="primary"
               onPress={next}>
-              Join 🏃‍♂️
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>

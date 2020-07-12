@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,13 +8,24 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 
+const LoadingIndicator = (props) => (
+  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <Spinner size="small" />
+  </View>
+);
+
 const CreateTeam = ({navigation}) => {
   const [name, setName] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Create 🛠';
 
   const next = () => {
+    setLoading(true);
     AuthService.createTeam(name).then(() =>
       navigation.navigate('CoachDashboard'),
     );
@@ -63,7 +74,7 @@ const CreateTeam = ({navigation}) => {
               style={styles.buttonStyle}
               size="giant"
               status="primary">
-              Create 🛠
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>

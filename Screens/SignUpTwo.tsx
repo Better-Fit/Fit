@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -10,10 +10,18 @@ import {
   Button,
   Text,
   Toggle,
+  Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
+import {AuthNavigator} from '../Navigators/AuthNavigator';
+import {NavigationContainer} from '@react-navigation/native';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+const LoadingIndicator = (props) => (
+  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <Spinner size="small" />
+  </View>
+);
 
 const useToggleState = (initialState = false) => {
   const [checked, setChecked] = React.useState(initialState);
@@ -26,10 +34,14 @@ const useToggleState = (initialState = false) => {
 export const SignUpTwo = ({navigation, route}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const primaryToggleState = useToggleState();
+
+  const buttonContent = loading ? <LoadingIndicator /> : '💨 Next';
 
   const next = async () => {
     if (email && password) {
+      setLoading(true);
       AuthService.signUp(
         email,
         password,
@@ -37,7 +49,11 @@ export const SignUpTwo = ({navigation, route}) => {
         primaryToggleState.checked,
       )
         .then(() => {
-          navigation.navigate('Loading');
+          if (primaryToggleState.checked) {
+            navigation.navigate('CreateTeam');
+          } else {
+            navigation.navigate('JoinTeam');
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -66,6 +82,10 @@ export const SignUpTwo = ({navigation, route}) => {
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
+    },
+    indicator: {
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 
@@ -125,13 +145,13 @@ export const SignUpTwo = ({navigation, route}) => {
             </Layout>
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
-          <Button
+            <Button
               onPress={next}
               appearance="outline"
               size="giant"
               style={styles.buttonStyle}
               status="primary">
-              💨 Next
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>

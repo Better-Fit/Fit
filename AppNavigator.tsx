@@ -1,60 +1,94 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {Landing} from './Screens/Landing';
-import {SignUp} from './Screens/SignUp';
-import {SignUpTwo} from './Screens/SignUpTwo';
-import JoinTeam from './Screens/JoinTeam';
-import Dashboard from './Screens/Dashboard';
-import CoachDashboard from './Screens/CoachDashboard';
-import {SignIn} from './Screens/SignIn';
-import CreateTeam from './Screens/CreateTeam';
-import {SurveyStack} from './Surveys/SurveyStack';
-import {Loading} from './Screens/Loading';
+import {AuthNavigator} from './Navigators/AuthNavigator';
+import {AppContext} from './Contexts/app.context';
+import AuthService from './Services/auth.service';
+import auth from '@react-native-firebase/auth';
 
-const {Navigator, Screen} = createStackNavigator();
+const AppNavigator = () => {
+  console.log('RE RENDER');
+  const {appInfo, dispatchApp} = React.useContext(AppContext);
+  const [initializing, setInitializing] = React.useState(true);
+  const [AuthenticatedUser, setAuthenticatedUser] = React.useState();
 
-const AuthNavigator = () => (
-  <Navigator headerMode="none" initialRouteName="Loading">
-    <Screen
-      name="Loading"
-      component={Loading}
-      options={{gestureEnabled: false}}
-    />
-    <Screen
-      name="Landing"
-      component={Landing}
-      options={{gestureEnabled: false}}
-    />
-    <Screen name="SignIn" component={SignIn} />
-    <Screen name="SignUpOne" component={SignUp} />
-    <Screen name="SignUpTwo" component={SignUpTwo} />
-    <Screen
-      name="JoinTeam"
-      component={JoinTeam}
-      options={{gestureEnabled: false}}
-    />
-    <Screen
-      name="CreateTeam"
-      component={CreateTeam}
-      options={{gestureEnabled: false}}
-    />
-    <Screen
-      name="Dashboard"
-      component={Dashboard}
-      options={{gestureEnabled: false}}
-    />
-    <Screen
-      name="CoachDashboard"
-      component={CoachDashboard}
-      options={{gestureEnabled: false}}
-    />
-    <Screen name="SurveyStack" component={SurveyStack} />
-  </Navigator>
-);
+  const onAuthStateChanged = (user) => {
+    // AuthService.signOut();
+    setAuthenticatedUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  };
 
-export const AppNavigator = () => (
-  <NavigationContainer>
-    <AuthNavigator />
-  </NavigationContainer>
-);
+  const changeAuthState = async () => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  };
+
+  React.useEffect(() => {
+    const initalizeAsync = async () => {
+      // AuthService.signOut();
+      await changeAuthState();
+
+      if (initializing) {
+        // null;
+      }
+      console.log('AUTHENTICATED USER', AuthenticatedUser);
+      if (!AuthenticatedUser) {
+        dispatchApp({
+          type: 'UPDATE_USER',
+          loading: false,
+        });
+      } else {
+        AuthService.getUser().then((user) => {
+          console.log('AUTHENTICATED USER', user);
+          dispatchApp({
+            type: 'UPDATE_USER',
+            user: user,
+          });
+        });
+      }
+
+      dispatchApp({
+        type: 'UPDATE_USER',
+        loading: false,
+      });
+    };
+
+    initalizeAsync();
+  }, []);
+
+  console.log('APP INFO USER', appInfo.user);
+  console.log('APP INFO LOADING', appInfo.loading);
+
+  const NavigateTo = (screen: string) => {
+    return <AuthNavigator initialRouteName={screen} />;
+  };
+
+  // if (appInfo.loading === true) {
+  //   dispatchApp({
+  //     type: 'UPDATE_USER',
+  //     loading: false,
+  //   });
+  //   return NavigateTo('Loading');
+  // }
+  if (appInfo.user === null) {
+    return NavigateTo('Landing');
+  } else {
+    const user = appInfo.user.data;
+    if (!user.coach) {
+      if (!user.teamId) {
+        return NavigateTo('JoinTeam');
+      } else {
+        return NavigateTo('Dashboard');
+      }
+    } else {
+      if (!user.teamId) {
+        return NavigateTo('CreateTeam');
+      } else {
+        return NavigateTo('CoachDashboard');
+      }
+    }
+  }
+};
+
+export default AppNavigator;

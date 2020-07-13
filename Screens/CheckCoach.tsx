@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {
   Icon,
   Layout,
@@ -10,21 +10,20 @@ import {
   Toggle,
   Text,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-const useToggleState = (initialState = false) => {
-  const [checked, setChecked] = React.useState(initialState);
 
-  const onCheckedChange = (isChecked) => {
-    setChecked(isChecked);
-  };
 
-  return {checked, onChange: onCheckedChange};
-};
-
-const CheckCoach = ({navigation}) => {
+export const CheckCoach = ({navigation, useToggleState}) => {
   const primaryToggleState = useToggleState();
+
+  const next = () => {
+    AuthService.update({coach: primaryToggleState}).then(() =>
+      navigation.navigate('JoinTeam'),
+    );
+  };
 
   const navigateBack = () => {
     navigation.goBack();
@@ -35,59 +34,24 @@ const CheckCoach = ({navigation}) => {
   );
 
   return (
-    <>
-      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <TopNavigation
-          title="Back"
-          alignment="start"
-          accessoryLeft={BackAction}
+    <Layout
+      style={{
+        height: 90,
+        width: '80%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}>
+      <Layout style={{justifyContent: 'center'}}>
+        <Text category="h6">Are you a coach?</Text>
+      </Layout>
+      <Layout style={{justifyContent: 'center'}}>
+        <Toggle
+          style={styles.toggle}
+          status="primary"
+          {...primaryToggleState}
         />
-        <Layout
-          style={{
-            flex: 2,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Layout
-            style={{
-              height: 90,
-              width: '80%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Layout style={{justifyContent: 'center'}}>
-              <Text category="h6">Are you a coach?</Text>
-            </Layout>
-            <Layout style={{justifyContent: 'center'}}>
-              <Toggle
-                style={styles.toggle}
-                status="primary"
-                {...primaryToggleState}
-              />
-            </Layout>
-          </Layout>
-          <Layout style={{height: 90, width: '80%'}}>
-            <Button
-              //   onPress={navigateSignUpTwo}
-              appearance="outline"
-              size="large"
-              status="primary">
-              Next
-            </Button>
-          </Layout>
-        </Layout>
-        <Layout
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
-      </SafeAreaView>
-    </>
+      </Layout>
+    </Layout>
   );
 };
 
@@ -101,4 +65,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckCoach;

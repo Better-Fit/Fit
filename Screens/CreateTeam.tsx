@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,29 +8,48 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Spinner,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
 
-const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+const LoadingIndicator = (props) => (
+  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <Spinner size="small" />
+  </View>
+);
 
 const CreateTeam = ({navigation}) => {
   const [name, setName] = React.useState('');
-  const navigateBack = () => {
-    navigation.goBack();
+  const [loading, setLoading] = React.useState(false);
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Create 🛠';
+
+  const next = () => {
+    setLoading(true);
+    AuthService.createTeam(name).then(() =>
+      navigation.navigate('CoachDashboard'),
+    );
   };
 
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  );
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
 
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <TopNavigation
-          title="Back"
-          alignment="start"
-          accessoryLeft={BackAction}
-        />
+        <TopNavigation title="Create Team" alignment="center" />
         <Layout
           style={{
             flex: 2,
@@ -50,11 +69,12 @@ const CreateTeam = ({navigation}) => {
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
-              //   onPress={navigateSignUpTwo}
+              onPress={next}
               appearance="outline"
-              size="large"
+              style={styles.buttonStyle}
+              size="giant"
               status="primary">
-              Create
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>

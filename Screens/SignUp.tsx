@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {
   Input,
   Icon,
@@ -18,16 +18,31 @@ export const SignUp = ({navigation}) => {
   const navigateBack = () => {
     navigation.goBack();
   };
-  const navigateSignUpTwo = () => {
-    navigation.navigate('SignUpTwo', {
-      firstName,
-      lastName,
-    });
+  const next = () => {
+    if (firstName && lastName) {
+      navigation.navigate('SignUpTwo', {
+        firstName,
+        lastName,
+      });
+    }
   };
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
 
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
@@ -66,11 +81,12 @@ export const SignUp = ({navigation}) => {
           </Layout>
           <Layout style={{height: 90, width: '80%'}}>
             <Button
-              onPress={navigateSignUpTwo}
+              onPress={next}
               appearance="outline"
-              size="large"
+              size="giant"
+              style={styles.buttonStyle}
               status="primary">
-              Next
+              💨 Next
             </Button>
           </Layout>
         </Layout>

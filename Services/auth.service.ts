@@ -8,15 +8,16 @@ import Team from '../Models/Team';
 class AuthService {
   static authInstance = auth();
 
-  static async signUp(email, password, nameData) {
+  static async signUp(email, password, formData, isCoach) {
     if (this.authInstance.currentUser) {
       this.authInstance.signOut();
     }
-    this.authInstance
+    return AuthService.authInstance
       .createUserWithEmailAndPassword(email, password)
       .then((resp) => {
         console.log(resp);
-        AuthService.update(nameData);
+        formData.coach = isCoach;
+        return AuthService.update(formData);
       })
       .catch((error) => {
         console.log(error);
@@ -24,22 +25,35 @@ class AuthService {
   }
 
   static async update(data) {
-    functions()
+    return functions()
       .httpsCallable('updateUser')(data)
-      .then((res) => {
-        console.log(res);
-      })
       .catch((error) => {
         console.log(error);
       });
   }
 
+  static async getUser() {
+    return functions()
+      .httpsCallable('getUser')()
+      .catch((error) => {
+        console.log('🛑', error);
+      });
+  }
+
   static async joinTeam(joinCode: string) {
     return functions()
-      .httpsCallable('joinTeam')({joinCode: joinCode})
+      .httpsCallable('joinTeam')({ joinCode: joinCode })
       .then((res) => {
         console.log('🌈', res);
       })
+      .catch((error) => {
+        console.log('🛑', error);
+      });
+  }
+
+  static async createTeam(name: string) {
+    return functions()
+      .httpsCallable('createTeam')({ name: name })
       .catch((error) => {
         console.log('🛑', error);
       });
@@ -54,6 +68,18 @@ class AuthService {
       .catch((error) => {
         console.log('🛑', error);
       });
+  }
+
+  static async signOut() {
+    return AuthService.authInstance.signOut();
+  }
+
+  static async waitForAuth(authenticated: () => void) {
+    AuthService.authInstance.onAuthStateChanged((user) => {
+      if (user != null) {
+        authenticated();
+      }
+    });
   }
 
   static async getTeam() {

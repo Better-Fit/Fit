@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {StyleSheet, Text, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,18 +8,45 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Text,
+  Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 
+const LoadingIndicator = (props) => (
+  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <Spinner size="small" />
+  </View>
+);
+
 const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Join 🏃‍♂️';
 
   const next = () => {
-    AuthService.joinTeam(joinCode).then((val) => {
-      AuthService.submitSurvey();
-    });
-    navigation.navigate('Dashboard');
+    if (joinCode) {
+      setLoading(true);
+      AuthService.joinTeam(joinCode).then(() => {
+        navigation.navigate('Dashboard');
+      });
+    }
   };
+
+  const styles = StyleSheet.create({
+    buttonStyle: {
+      backgroundColor: 'white',
+      borderWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+  });
 
   return (
     <>
@@ -28,7 +55,7 @@ const JoinTeam = ({navigation, route}) => {
         <TopNavigation title="Entry Code" alignment="center" />
         <Layout
           style={{
-            flex: 2,
+            flex: 1,
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
@@ -46,21 +73,14 @@ const JoinTeam = ({navigation, route}) => {
           <Layout style={{height: 90, width: '80%'}}>
             <Button
               appearance="outline"
-              size="large"
+              style={styles.buttonStyle}
+              size="giant"
               status="primary"
               onPress={next}>
-              Finish
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>
-        <Layout
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
       </SafeAreaView>
     </>
   );

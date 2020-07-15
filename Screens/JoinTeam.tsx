@@ -12,13 +12,35 @@ import {
   Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
-import RNRestart from 'react-native-restart';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const LoadingIndicator = (props) => (
   <View style={{justifyContent: 'center', alignItems: 'center'}}>
     <Spinner size="small" />
   </View>
 );
+
+const showFields = () => {
+  showMessage({
+    message: 'Please complete all fields',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
+
+const show = (error) => {
+  showMessage({
+    message: error.message,
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
 
 const JoinTeam = ({navigation, route}) => {
   const [joinCode, setJoinCode] = React.useState('');
@@ -29,9 +51,16 @@ const JoinTeam = ({navigation, route}) => {
   const next = () => {
     if (joinCode) {
       setLoading(true);
-      AuthService.joinTeam(joinCode).then(() => {
-        navigation.navigate('Dashboard');
-      });
+      AuthService.joinTeam(joinCode)
+        .then(() => {
+          navigation.navigate('Dashboard');
+        })
+        .catch((error) => {
+          show(error);
+          setLoading(false);
+        });
+    } else {
+      showFields();
     }
   };
 
@@ -67,7 +96,7 @@ const JoinTeam = ({navigation, route}) => {
               size="large"
               value={joinCode}
               label="Join Code"
-              placeholder="43201"
+              placeholder="Coach Provided Code"
               onChangeText={(nextValue) => setJoinCode(nextValue)}
             />
           </Layout>

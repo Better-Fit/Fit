@@ -15,7 +15,19 @@ import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
 import SurveyAnswer from '../Models/SurveyAnswer';
 import {storeItemInCache} from '../Utils/cache.util';
-import {resolvePreset} from '@babel/core';
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
+const showFields = () => {
+  showMessage({
+    message: 'Please complete field',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
+
 
 export const SurveyQuestion = ({navigation, route}) => {
   const navigateBack = () => {
@@ -28,19 +40,23 @@ export const SurveyQuestion = ({navigation, route}) => {
   );
 
   const next = (response) => {
-    route.params.addResponse(
-      new SurveyAnswer(route.params.survey.question, 'string', response),
-      route.params.index,
-    );
-    if (route.params.index + 1 === route.params.surveyLength) {
-      route.params.submitSurvey();
-      storeItemInCache(
-        `${route.params.surveyType}`,
-        new Date().getDate(),
-      ).then(() => navigation.navigate('Dashboard'));
-      console.log('Survey Submitted 😀');
+    if (response) {
+      route.params.addResponse(
+        new SurveyAnswer(route.params.survey.question, 'string', response),
+        route.params.index,
+      );
+      if (route.params.index + 1 === route.params.surveyLength) {
+        route.params.submitSurvey();
+        storeItemInCache(
+          `${route.params.surveyType}`,
+          new Date().getDate(),
+        ).then(() => navigation.navigate('Dashboard'));
+        console.log('Survey Submitted 😀');
+      } else {
+        navigation.navigate(`${route.params.index + 1}`);
+      }
     } else {
-      navigation.navigate(`${route.params.index + 1}`);
+      showFields();
     }
   };
 

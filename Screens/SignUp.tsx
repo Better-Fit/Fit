@@ -9,8 +9,20 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+
+const showFields = () => {
+  showMessage({
+    message: 'Please complete all fields',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
 
 export const SignUp = ({navigation}) => {
   const [firstName, setFirstName] = React.useState('');
@@ -24,6 +36,8 @@ export const SignUp = ({navigation}) => {
         firstName,
         lastName,
       });
+    } else {
+      showFields();
     }
   };
   const BackAction = () => (

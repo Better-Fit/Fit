@@ -23,9 +23,6 @@ class AuthService {
           storeItemInCache('uid', resp.user.uid);
         }
         return AuthService.update(formData);
-      })
-      .catch((error) => {
-        console.log(error);
       });
   }
 
@@ -60,10 +57,10 @@ class AuthService {
       .httpsCallable('joinTeam')({joinCode: joinCode})
       .then((res) => {
         console.log('🌈', res);
-      })
-      .catch((error) => {
-        console.log('🛑', error);
       });
+      // .catch((error) => {
+      //   console.log('🛑', error);
+      // });
   }
 
   static async createTeam(name: string) {

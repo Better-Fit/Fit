@@ -2,7 +2,6 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {Button, Icon, Layout, TopNavigation, Text} from '@ui-kitten/components';
-import theme from 'Styles/theme';
 
 const SignInIcon = (props) => <Icon {...props} name="log-in-outline" />;
 

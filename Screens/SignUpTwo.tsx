@@ -15,6 +15,7 @@ import {
 import AuthService from '../Services/auth.service';
 import {AuthNavigator} from '../Navigators/AuthNavigator';
 import {NavigationContainer} from '@react-navigation/native';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 const LoadingIndicator = (props) => (
@@ -22,6 +23,28 @@ const LoadingIndicator = (props) => (
     <Spinner size="small" />
   </View>
 );
+
+const show = () => {
+  showMessage({
+    message: 'That email address is already in use!',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
+
+const showFields = () => {
+  showMessage({
+    message: 'Please complete all fields',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
 
 const useToggleState = (initialState = false) => {
   const [checked, setChecked] = React.useState(initialState);
@@ -57,7 +80,13 @@ export const SignUpTwo = ({navigation, route}) => {
         })
         .catch((error) => {
           console.log(error);
+          if (error.code === 'auth/email-already-in-use') {
+            show();
+          }
+          setLoading(false);
         });
+    } else {
+      showFields();
     }
   };
 

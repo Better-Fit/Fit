@@ -11,13 +11,24 @@ import {
   Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
-import RNRestart from 'react-native-restart';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const LoadingIndicator = (props) => (
   <View style={{justifyContent: 'center', alignItems: 'center'}}>
     <Spinner size="small" />
   </View>
 );
+
+const showFields = () => {
+  showMessage({
+    message: 'Please complete all fields',
+    type: 'danger',
+  });
+
+  setTimeout(() => {
+    hideMessage();
+  }, 3000);
+};
 
 const CreateTeam = ({navigation}) => {
   const [name, setName] = React.useState('');
@@ -26,10 +37,14 @@ const CreateTeam = ({navigation}) => {
   const buttonContent = loading ? <LoadingIndicator /> : 'Create 🛠';
 
   const next = () => {
-    setLoading(true);
-    AuthService.createTeam(name).then(() =>
-      navigation.navigate('CoachDashboard'),
-    );
+    if (name) {
+      setLoading(true);
+      AuthService.createTeam(name).then(() =>
+        navigation.navigate('CoachDashboard'),
+      );
+    } else {
+      showFields();
+    }
   };
 
   const styles = StyleSheet.create({

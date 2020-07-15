@@ -13,11 +13,13 @@ export const SurveyStack = ({navigation, route}) => {
   const addResponse = (response, index) => {
     responses[index] = response;
   };
-  const submitSurvey = async () => {
+  const submitSurvey = async (surveyType) => {
     let surveyAnswers = Object.keys(responses).map((key) => {
       return responses[key];
     });
-    await AuthService.submitSurvey(new SurveySubmission(surveyAnswers));
+    await AuthService.submitSurvey(
+      new SurveySubmission(surveyAnswers, surveyType),
+    );
   };
   const surveyLength = Surveys[route.params.surveyType].length;
   return (

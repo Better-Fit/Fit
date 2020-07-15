@@ -9,8 +9,8 @@ class AuthService {
   static authInstance = auth();
 
   static async signUp(email, password, formData, isCoach) {
-    if (this.authInstance.currentUser) {
-      this.authInstance.signOut();
+    if (AuthService.authInstance.currentUser) {
+      AuthService.authInstance.signOut();
     }
     return AuthService.authInstance
       .createUserWithEmailAndPassword(email, password)

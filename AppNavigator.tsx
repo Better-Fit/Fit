@@ -4,18 +4,26 @@ import {AuthNavigator} from './Navigators/AuthNavigator';
 import {AppContext} from './Contexts/app.context';
 import AuthService from './Services/auth.service';
 import auth from '@react-native-firebase/auth';
+import {Text} from '@ui-kitten/components';
+import Loading from './Screens/Loading';
 
 const AppNavigator = () => {
   console.log('RE RENDER');
   const {appInfo, dispatchApp} = React.useContext(AppContext);
   const [initializing, setInitializing] = React.useState(true);
-  const [AuthenticatedUser, setAuthenticatedUser] = React.useState();
+  // const [AuthenticatedUser, setAuthenticatedUser] = React.useState();
 
   const onAuthStateChanged = (user) => {
-    // AuthService.signOut();
-    setAuthenticatedUser(user);
     if (initializing) {
       setInitializing(false);
+      if (user) {
+        AuthService.getUser().then((authUser) => {
+          dispatchApp({
+            type: 'UPDATE_USER',
+            user: authUser,
+          });
+        });
+      }
     }
   };
 
@@ -26,51 +34,21 @@ const AppNavigator = () => {
 
   React.useEffect(() => {
     const initalizeAsync = async () => {
-      // AuthService.signOut();
-      await changeAuthState();
-
       if (initializing) {
-        // null;
+        await changeAuthState();
       }
-      console.log('AUTHENTICATED USER', AuthenticatedUser);
-      if (!AuthenticatedUser) {
-        dispatchApp({
-          type: 'UPDATE_USER',
-          loading: false,
-        });
-      } else {
-        AuthService.getUser().then((user) => {
-          console.log('AUTHENTICATED USER', user);
-          dispatchApp({
-            type: 'UPDATE_USER',
-            user: user,
-          });
-        });
-      }
-
-      dispatchApp({
-        type: 'UPDATE_USER',
-        loading: false,
-      });
     };
-
     initalizeAsync();
   }, []);
-
-  console.log('APP INFO USER', appInfo.user);
-  console.log('APP INFO LOADING', appInfo.loading);
 
   const NavigateTo = (screen: string) => {
     return <AuthNavigator initialRouteName={screen} />;
   };
 
-  // if (appInfo.loading === true) {
-  //   dispatchApp({
-  //     type: 'UPDATE_USER',
-  //     loading: false,
-  //   });
-  //   return NavigateTo('Loading');
-  // }
+  if (appInfo.loading) {
+    return <Loading />;
+  }
+
   if (appInfo.user === null) {
     return NavigateTo('Landing');
   } else {

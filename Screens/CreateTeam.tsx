@@ -11,6 +11,7 @@ import {
   Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
+import RNRestart from 'react-native-restart';
 
 const LoadingIndicator = (props) => (
   <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -75,6 +76,19 @@ const CreateTeam = ({navigation}) => {
               size="giant"
               status="primary">
               {buttonContent}
+            </Button>
+          </Layout>
+          <Layout style={{height: 90, width: '80%'}}>
+            <Button
+              onPress={() => {
+                AuthService.signOut();
+                RNRestart.Restart();
+              }}
+              appearance="outline"
+              style={styles.buttonStyle}
+              size="giant"
+              status="primary">
+              Sign Out 👋
             </Button>
           </Layout>
         </Layout>

@@ -17,11 +17,6 @@ export const AuthNavigator = ({initialRouteName}) => {
   return (
     <Navigator headerMode="none" initialRouteName={initialRouteName}>
       <Screen
-        name="Loading"
-        component={Loading}
-        options={{gestureEnabled: false}}
-      />
-      <Screen
         name="Landing"
         component={Landing}
         options={{gestureEnabled: false}}

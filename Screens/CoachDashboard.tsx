@@ -5,7 +5,6 @@ import {Layout, Text, Button} from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 import Clipboard from '@react-native-community/clipboard';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-import RNRestart from 'react-native-restart';
 
 const CoachDashboard = ({navigation}) => {
   const [joinCode, setJoinCode] = React.useState('');
@@ -36,6 +35,16 @@ const CoachDashboard = ({navigation}) => {
   }, []);
 
   const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonLayout: {
+      height: 100,
+      width: '80%',
+    },
     buttonStyle: {
       backgroundColor: 'white',
       borderWidth: 0,
@@ -50,55 +59,35 @@ const CoachDashboard = ({navigation}) => {
   });
 
   return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-      <Layout
-        style={{
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontSize: 30}}>{teamName}</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <Layout style={{height: 50, width: '80%'}}>
+        <Text style={{fontSize: 25, textAlign: 'center'}}>{teamName}</Text>
       </Layout>
-      <Layout
-        style={{
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          height: '10%',
-        }}>
+      <Layout style={styles.buttonLayout}>
         <Text style={{fontSize: 25, textAlign: 'center'}}>
           Congrats 🎉{'\n'}your team is all set up
         </Text>
       </Layout>
-      <Layout
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 90,
-          width: '80%'
-        }}>
+      <Layout style={styles.buttonLayout}>
         <Button
           onPress={() => {
             Clipboard.setString(joinCode);
             show();
           }}
-          style={[styles.buttonStyle]}
           appearance="outline"
+          size="giant"
           status="primary"
-          size="giant">
+          style={styles.buttonStyle}>
           Copy join code 📋
         </Button>
       </Layout>
-      <Layout
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+      <Layout style={styles.buttonLayout}>
         <Button
-          onPress={() => {}}
-          style={[styles.buttonStyle]}
+          onPress={() => AuthService.signOut()}
           appearance="outline"
+          size="giant"
           status="primary"
-          size="giant">
+          style={styles.buttonStyle}>
           Sign Out 👋
         </Button>
       </Layout>

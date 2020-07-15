@@ -89,7 +89,6 @@ const JoinTeam = ({navigation, route}) => {
               status="primary"
               onPress={() => {
                 AuthService.signOut();
-                RNRestart.Restart();
               }}>
               Sign Out 👋
             </Button>

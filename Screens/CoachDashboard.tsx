@@ -9,12 +9,14 @@ import RNRestart from 'react-native-restart';
 
 const CoachDashboard = ({navigation}) => {
   const [joinCode, setJoinCode] = React.useState('');
+  const [teamName, setTeamName] = React.useState('');
 
   const loadTeam = async () => {
     AuthService.waitForAuth(async () => {
       let team = await AuthService.getTeam();
-      console.log(team.joinCode);
+
       setJoinCode(team.joinCode);
+      setTeamName(team.name);
     });
   };
 
@@ -48,74 +50,57 @@ const CoachDashboard = ({navigation}) => {
   });
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
       <Layout
         style={{
-          flex: 1,
-          justifyContent: 'flex-start',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
-        <Layout
-          style={{
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            height: '40%',
-            width: '90%',
-          }}>
-          <Text style={{fontSize: 25, textAlign: 'center'}}>
-            Congrats! 🎊 {'\n'} Your team is all set up
-          </Text>
-          <Layout
-            style={{
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              height: '40%',
-              width: '90%',
-            }}>
-            <Layout
-              style={{
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                height: '50%',
-                width: '90%',
-              }}>
-              <Text style={{fontSize: 20}}>Your Join Code is {joinCode}</Text>
-            </Layout>
-            <Layout
-              style={{
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                height: '50%',
-                width: '90%',
-              }}>
-              <Button
-                onPress={() => {
-                  Clipboard.setString(joinCode);
-                  show();
-                }}>
-                Copy join code
-              </Button>
-            </Layout>
-            <Layout
-              style={{
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                height: '50%',
-                width: '90%',
-              }}>
-              <Button
-                style={styles.buttonStyle}
-                size="giant"
-                appearance="outline"
-                status="primary"
-                onPress={() => {
-                  AuthService.signOut();
-                }}>
-                Sign Out 👋
-              </Button>
-            </Layout>
-          </Layout>
-        </Layout>
+        <Text style={{fontSize: 30}}>{teamName}</Text>
+      </Layout>
+      <Layout
+        style={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          height: '10%',
+        }}>
+        <Text style={{fontSize: 25, textAlign: 'center'}}>
+          Congrats 🎉{'\n'}your team is all set up
+        </Text>
+      </Layout>
+      <Layout
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 90,
+          width: '80%'
+        }}>
+        <Button
+          onPress={() => {
+            Clipboard.setString(joinCode);
+            show();
+          }}
+          style={[styles.buttonStyle]}
+          appearance="outline"
+          status="primary"
+          size="giant">
+          Copy join code 📋
+        </Button>
+      </Layout>
+      <Layout
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Button
+          onPress={() => {}}
+          style={[styles.buttonStyle]}
+          appearance="outline"
+          status="primary"
+          size="giant">
+          Sign Out 👋
+        </Button>
       </Layout>
     </SafeAreaView>
   );

@@ -46,7 +46,7 @@ export const SurveyQuestion = ({navigation, route}) => {
         route.params.index,
       );
       if (route.params.index + 1 === route.params.surveyLength) {
-        route.params.submitSurvey();
+        route.params.submitSurvey(route.params.surveyType);
         storeItemInCache(
           `${route.params.surveyType}`,
           new Date().getDate(),
@@ -135,6 +135,7 @@ const FormSubmission = (props) => {
           value={formSubmission}
           placeholder="Response"
           onChangeText={(nextValue) => setFormSubmission(nextValue)}
+          returnKeyType="next"
         />
       </Layout>
       <Layout style={{width: '75%'}}>

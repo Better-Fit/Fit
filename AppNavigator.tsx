@@ -12,6 +12,7 @@ const AppNavigator = () => {
   const {appInfo, dispatchApp} = React.useContext(AppContext);
 
   React.useEffect(() => {
+    // AsyncStorage.clear();
     checkAuthState();
   }, []);
 

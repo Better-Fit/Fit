@@ -17,7 +17,6 @@ const Dashboard = ({navigation}) => {
       justifyContent: 'center',
       alignItems: 'center',
       height: '20%',
-      width: '90%',
     },
     bannerText: {
       fontSize: 18,
@@ -128,13 +127,13 @@ const Dashboard = ({navigation}) => {
         <Text style={styles.bannerText}>Your Surveys 📊</Text>
       </Layout>
       <Layout style={styles.container}>
-        <Layout style={{width: '75%', height: 100}}>
+        <Layout style={{width: '90%', height: 100}}>
           {pre ? noPreSurvey : preSurvey}
         </Layout>
-        <Layout style={{width: '75%', height: 100}}>
+        <Layout style={{width: '90%', height: 100}}>
           {post ? noPostSurvey : postSurvey}
         </Layout>
-        <Layout style={{width: '75%', height: 100}}>{signOutButton}</Layout>
+        <Layout style={{width: '90%', height: 100}}>{signOutButton}</Layout>
       </Layout>
     </SafeAreaView>
   );

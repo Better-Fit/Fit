@@ -110,7 +110,6 @@ const CoachDashboard = ({navigation}) => {
                 status="primary"
                 onPress={() => {
                   AuthService.signOut();
-                  RNRestart.Restart();
                 }}>
                 Sign Out 👋
               </Button>

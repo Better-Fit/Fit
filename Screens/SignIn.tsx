@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import {
   Input,
   Icon,
@@ -9,15 +9,37 @@ import {
   TopNavigationAction,
   Button,
 } from '@ui-kitten/components';
+import AuthService from '../Services/auth.service';
+import { AppContext } from '../Contexts/app.context';
+import RNRestart from 'react-native-restart';
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-export const SignIn = ({navigation}) => {
+export const SignIn = ({ navigation }) => {
+  const { appInfo, dispatchApp } = React.useContext(AppContext);
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const next = () => {
-    navigation.navigate('Dashboard');
+    console.log('🙄', email + ' ' + password);
+    if (email && password) {
+      AuthService.signIn(email, password)
+        .then(() => {
+          AuthService.getUser().then((user) => {
+            dispatchApp({
+              type: 'UPDATE_USER',
+              user: user,
+              loading: false,
+            });
+
+            RNRestart.Restart();
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const navigateBack = () => {
@@ -43,8 +65,8 @@ export const SignIn = ({navigation}) => {
 
   return (
     <>
-      <SafeAreaView style={{flex: 0, backgroundColor: 'white'}} />
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <TopNavigation
           title="Back"
           alignment="start"
@@ -57,7 +79,7 @@ export const SignIn = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Layout style={{height: 90, width: '80%'}}>
+          <Layout style={{ height: 90, width: '80%' }}>
             <Input
               textContentType="emailAddress"
               size="large"
@@ -67,7 +89,7 @@ export const SignIn = ({navigation}) => {
               onChangeText={(nextValue) => setEmail(nextValue)}
             />
           </Layout>
-          <Layout style={{height: 90, width: '80%'}}>
+          <Layout style={{ height: 90, width: '80%' }}>
             <Input
               secureTextEntry
               textContentType="password"
@@ -78,7 +100,7 @@ export const SignIn = ({navigation}) => {
               onChangeText={(nextValue) => setPassword(nextValue)}
             />
           </Layout>
-          <Layout style={{height: 90, width: '80%'}}>
+          <Layout style={{ height: 90, width: '80%' }}>
             <Button
               appearance="outline"
               style={styles.buttonStyle}

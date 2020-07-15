@@ -82,7 +82,6 @@ const CreateTeam = ({navigation}) => {
             <Button
               onPress={() => {
                 AuthService.signOut();
-                RNRestart.Restart();
               }}
               appearance="outline"
               style={styles.buttonStyle}

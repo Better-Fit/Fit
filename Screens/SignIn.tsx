@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -8,6 +8,7 @@ import {
   TopNavigation,
   TopNavigationAction,
   Button,
+  Spinner,
 } from '@ui-kitten/components';
 import AuthService from '../Services/auth.service';
 import {AppContext} from '../Contexts/app.context';
@@ -21,6 +22,7 @@ export const SignIn = ({navigation}) => {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const show = () => {
     showMessage({
@@ -44,9 +46,18 @@ export const SignIn = ({navigation}) => {
     }, 3000);
   };
 
+  const LoadingIndicator = (props) => (
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Spinner size="small" />
+    </View>
+  );
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Sign In 📲';
+
   const next = () => {
     console.log('🙄', email + ' ' + password);
     if (email && password) {
+      setLoading(true);
       AuthService.signIn(email, password)
         .then(() => {
           AuthService.getUser().then((user) => {
@@ -60,6 +71,7 @@ export const SignIn = ({navigation}) => {
           });
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
           if (error.code === 'auth/invalid-email') {
             show();
@@ -135,7 +147,7 @@ export const SignIn = ({navigation}) => {
               size="giant"
               status="primary"
               onPress={next}>
-              Sign In 👉
+              {buttonContent}
             </Button>
           </Layout>
         </Layout>

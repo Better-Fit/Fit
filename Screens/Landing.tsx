@@ -1,18 +1,34 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import {Button, Icon, Layout, TopNavigation, Text} from '@ui-kitten/components';
-
-const SignInIcon = (props) => <Icon {...props} name="log-in-outline" />;
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  Button,
+  Icon,
+  Layout,
+  TopNavigation,
+  Text,
+  Spinner,
+} from '@ui-kitten/components';
 
 export const Landing = ({navigation}) => {
+  const [loading, setLoading] = React.useState(false);
+
   const navigateSignUpOne = () => {
     navigation.navigate('SignUpOne');
   };
 
   const navigateSignIn = () => {
+    setLoading(true);
     navigation.navigate('SignIn');
   };
+
+  const LoadingIndicator = (props) => (
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Spinner size="small" />
+    </View>
+  );
+
+  const buttonContent = loading ? <LoadingIndicator /> : 'Sign In 📲';
 
   const styles = StyleSheet.create({
     buttonStyle: {
@@ -48,7 +64,7 @@ export const Landing = ({navigation}) => {
               appearance="outline"
               style={styles.buttonStyle}
               onPress={navigateSignIn}>
-              Sign In 📲
+              {buttonContent}
             </Button>
           </Layout>
           <Layout style={{width: '75%', height: 90}}>

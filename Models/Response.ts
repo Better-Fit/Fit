@@ -1,8 +1,10 @@
 export class Response {
   answers: Answer[];
+  surveyType: string;
 
-  constructor(answers: Answer[]) {
+  constructor(answers: Answer[], surveyType: string) {
     this.answers = answers;
+    this.surveyType = surveyType;
   }
 }
 
@@ -39,4 +41,10 @@ export class ListAnswer extends Answer {
     super(question, response, responseType);
     this.list = list;
   }
+}
+
+export enum SurveyType {
+  PRE = 'PRE',
+  POST = 'POST',
+  COVID = 'COVID',
 }

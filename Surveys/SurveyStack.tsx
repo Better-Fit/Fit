@@ -8,14 +8,19 @@ import {Answer, Response} from '../Models/Response';
 
 const {Navigator, Screen} = createStackNavigator();
 
+var responses = {};
+
 export const SurveyStack = ({navigation, route}) => {
-  let responses = {};
+  
   const addResponse = (response: Answer, index: number) => {
     responses[index] = response;
+    console.log('😚',responses);
   };
   const submitSurvey = async (surveyType: string) => {
-    const response = new Response(responses);
-    console.log(response);
+    let mappedResponses = Object.keys(responses).map((key) => responses[key]);
+    console.log(surveyType);
+    const response = new Response(mappedResponses as Answer[], surveyType);
+    responses = {};
     return SurveyService.sendResponse(response);
   };
   const surveyLength = Surveys[route.params.surveyType].length;

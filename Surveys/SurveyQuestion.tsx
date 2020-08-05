@@ -39,6 +39,7 @@ const showFields = () => {
 };
 
 export const SurveyQuestion = ({navigation, route}) => {
+  const surveyType = route.params.surveyType;
   const survey = route.params.survey;
 
   const navigateBack = () => {
@@ -70,7 +71,7 @@ export const SurveyQuestion = ({navigation, route}) => {
       route.params.addResponse(answer, currentIndex);
 
       if (currentIndex + 1 == surveyLength) {
-        submitSurvey(survey.type).then(() => {
+        submitSurvey(surveyType).then(() => {
           storeItemInCache(route.params.surveyType, new Date().getDate());
           navigation.navigate('Dashboard');
         });

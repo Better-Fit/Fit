@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
+import {SafeAreaView, StyleSheet, FlatList} from 'react-native';
 import {
   Input,
   Icon,
@@ -10,12 +11,21 @@ import {
   TopNavigationAction,
   Button,
   Text,
+  Radio,
+  RadioGroup,
+  CheckBox as KittenCheckBox,
 } from '@ui-kitten/components';
 import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
 import SurveyAnswer from '../Models/SurveyAnswer';
 import {storeItemInCache} from '../Utils/cache.util';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import {
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native-gesture-handler';
+import {Answer, ListAnswer, ResponseType} from '../Models/Response';
 
 const showFields = () => {
   showMessage({
@@ -28,8 +38,9 @@ const showFields = () => {
   }, 3000);
 };
 
-
 export const SurveyQuestion = ({navigation, route}) => {
+  const survey = route.params.survey;
+
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -39,21 +50,32 @@ export const SurveyQuestion = ({navigation, route}) => {
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
 
-  const next = (response) => {
-    if (response) {
-      route.params.addResponse(
-        new SurveyAnswer(route.params.survey.question, 'string', response),
-        route.params.index,
-      );
-      if (route.params.index + 1 === route.params.surveyLength) {
-        route.params.submitSurvey(route.params.surveyType);
-        storeItemInCache(
-          `${route.params.surveyType}`,
-          new Date().getDate(),
-        ).then(() => navigation.navigate('Dashboard'));
-        console.log('Survey Submitted 😀');
+  const next = (response: any, list?: string[]) => {
+    // Add response, if at end then submit and store date and type and go to dashboard, of not at end navigate to route.params.index + 1
+    const currentIndex = route.params.index;
+    const surveyLength = route.params.surveyLength;
+    const submitSurvey = route.params.submitSurvey;
+
+    console.log('SCREEN_RESPONSE:', response, list);
+
+    let answer: Answer;
+
+    if (response || survey.optional) {
+      if (list == undefined) {
+        answer = new Answer(survey.question, response, survey.type);
       } else {
-        navigation.navigate(`${route.params.index + 1}`);
+        answer = new ListAnswer(survey.question, response, survey.type, list);
+      }
+
+      route.params.addResponse(answer, currentIndex);
+
+      if (currentIndex + 1 == surveyLength) {
+        submitSurvey(survey.type).then(() => {
+          storeItemInCache(route.params.surveyType, new Date().getDate());
+          navigation.navigate('Dashboard');
+        });
+      } else {
+        navigation.navigate(currentIndex + 1 + '');
       }
     } else {
       showFields();
@@ -74,7 +96,8 @@ export const SurveyQuestion = ({navigation, route}) => {
         <Layout
           style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <QuestionHeader question={route.params.survey.question} />
-          {route.params.survey.type == 'numeric' ? (
+
+          {survey.type == ResponseType.NUMERIC ? (
             checkedType.map((entry, index) => (
               <Rating
                 color={entry.color}
@@ -85,7 +108,37 @@ export const SurveyQuestion = ({navigation, route}) => {
               />
             ))
           ) : (
+            <></>
+          )}
+
+          {survey.type == ResponseType.STRING ? (
             <FormSubmission next={next} />
+          ) : (
+            <></>
+          )}
+
+          {survey.type == ResponseType.QUESTIONAIRRE ? (
+            <Questionairre survey={survey} next={next} />
+          ) : (
+            <></>
+          )}
+
+          {survey.type == ResponseType.QUESTIONAIRRE_LIST ? (
+            <QuestionairreList survey={survey} next={next} />
+          ) : (
+            <></>
+          )}
+
+          {survey.type == ResponseType.BOOLEAN ? (
+            <BooleanQuestion survey={survey} next={next} />
+          ) : (
+            <></>
+          )}
+
+          {survey.type == ResponseType.BOOLEAN_LIST ? (
+            <BooleanListQuestion survey={survey} next={next} />
+          ) : (
+            <></>
           )}
         </Layout>
       </SafeAreaView>
@@ -254,5 +307,372 @@ const Rating = (props) => {
     //     </Layout>
     //   </TouchableOpacity>
     // </Layout>
+  );
+};
+
+// Questionarrire components
+
+const Questionairre = (props) => {
+  const [flip, setFlip] = React.useState(false);
+  const survey = props.survey;
+  const answersMap = survey.answers.map((answer) => {
+    return {
+      id: answer,
+      title: answer,
+    };
+  });
+
+  const selectedAnswers: string[] = [];
+  const addSelectedAnswer = (answer: string) => {
+
+    if (selectedAnswers.indexOf(answer) === -1) {
+      selectedAnswers.push(answer);
+    }
+  };
+  const removeSelectedAnswer = (answer: string) => {
+    if (selectedAnswers.indexOf(answer) !== -1) {
+      selectedAnswers.splice(selectedAnswers.indexOf(answer), 1);
+    }
+  };
+
+  const renderItem = (item) => {
+    return (
+      <Layout
+        style={{width: '100%', justifyContent: 'flex-end', height: 80}}
+        key={item.id}>
+        <QuestionairreAnswer
+          selected={selectedAnswers.indexOf(item.title) != -1}
+          text={item.title}
+          addSelectedAnswer={addSelectedAnswer}
+          removeSelectedAnswer={removeSelectedAnswer}
+        />
+        <Layout
+          style={{height: 1, width: '100%', backgroundColor: 'lightgrey'}}
+        />
+      </Layout>
+    );
+  };
+
+  return (
+    <Layout
+      style={{
+        justifyContent: 'flex-start',
+        height: '80%',
+        width: '90%',
+      }}>
+      <ScrollView indicatorStyle="white">
+        {answersMap.map((answerObject) => {
+          return renderItem(answerObject);
+        })}
+        <Button
+          onPress={() => props.next(selectedAnswers)}
+          appearance="outline"
+          size="giant"
+          status="primary">
+          Next
+        </Button>
+      </ScrollView>
+    </Layout>
+  );
+};
+
+const QuestionairreAnswer = (props) => {
+  const [selected, setSelected] = React.useState(props.selected);
+  console.log('PROPS', props.selected);
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        props.addSelectedAnswer(props.text);
+        setSelected(!selected);
+      }}
+      style={{
+        justifyContent: 'flex-end',
+        height: 60,
+        alignItems: 'flex-start',
+        width: '100%',
+      }}>
+      <Layout style={{flexDirection: 'row', height: '100%', width: '100%'}}>
+        <Layout
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            width: '10%',
+          }}>
+          <Layout
+            style={{
+              borderRadius: 15,
+              borderWidth: 2,
+              borderColor: 'lightgrey',
+              height: 30,
+              width: 30,
+              backgroundColor: selected ? 'lightgreen' : 'white',
+            }}
+          />
+        </Layout>
+        <Layout
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: '100%',
+            flexWrap: 'wrap',
+            height: '100%',
+          }}>
+          <Text style={{fontSize: 20}}>{props.text}</Text>
+        </Layout>
+      </Layout>
+    </TouchableOpacity>
+  );
+};
+
+const QuestionairreList = (props) => {
+  const [listItems, setListItems] = React.useState<string[]>([]);
+  const survey = props.survey;
+  const answersMap = survey.answers.map((answer) => {
+    return {
+      id: answer,
+      title: answer,
+    };
+  });
+
+  const selectedAnswers: string[] = [];
+  const addSelectedAnswer = (answer: string) => {
+    if (selectedAnswers.indexOf(answer) === -1) {
+      selectedAnswers.push(answer);
+    }
+
+    console.log(selectedAnswers);
+  };
+  const removeSelectedAnswer = (answer: string) => {
+    if (selectedAnswers.indexOf(answer) !== -1) {
+      selectedAnswers.splice(selectedAnswers.indexOf(answer), 1);
+    }
+
+    console.log(selectedAnswers);
+  };
+
+  const renderItem = (item) => {
+    return (
+      <Layout
+        style={{width: '100%', justifyContent: 'flex-end', height: 80}}
+        key={item.id}>
+        <QuestionairreAnswer
+          text={item.title}
+          addSelectedAnswer={addSelectedAnswer}
+          removeSelectedAnswer={removeSelectedAnswer}
+        />
+        <Layout
+          style={{height: 1, width: '100%', backgroundColor: 'lightgrey'}}
+        />
+      </Layout>
+    );
+  };
+
+  const itemAdded = (item) => {
+    listItems.push(item as string);
+    console.log(listItems);
+    setListItems([...listItems]);
+  };
+
+  return (
+    <SafeAreaView
+      style={{
+        justifyContent: 'flex-start',
+        width: '90%',
+        flex: 1,
+      }}>
+      <ScrollView indicatorStyle="white">
+        {answersMap.map((answerObject) => {
+          return renderItem(answerObject);
+        })}
+        <Layout
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}>
+          <Layout
+            style={{
+              height: 80,
+              width: '100%',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+            }}>
+            <Text category="h4">List Answers</Text>
+          </Layout>
+          <ListInput itemAdded={itemAdded} />
+          {console.log('LIST:', listItems)}
+          {listItems.map((listItem) => {
+            return <ListInput itemAdded={itemAdded} />;
+          })}
+          <Button
+            style={{width: '100%'}}
+            onPress={() => props.next(selectedAnswers, listItems)}
+            appearance="outline"
+            size="giant"
+            status="primary">
+            Next
+          </Button>
+        </Layout>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const ListInput = (props) => {
+  const [text, setText] = React.useState('');
+
+  const keyPressed = (e) => {
+    console.log(e.nativeEvent.text);
+    props.itemAdded(e.nativeEvent.text);
+  };
+
+  return (
+    <Layout style={{width: '100%', justifyContent: 'flex-end', height: 100}}>
+      <Layout
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+        }}>
+        <Layout
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            height: '50%',
+          }}>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: '#3366FF',
+              height: 40,
+              paddingLeft: '3%',
+              borderRadius: 4,
+            }}
+            value={text}
+            onChangeText={setText}
+            placeholder="List Answer"
+            placeholderTextColor="#3366FF"
+            returnKeyType="done"
+            onSubmitEditing={keyPressed}
+          />
+        </Layout>
+      </Layout>
+    </Layout>
+  );
+};
+
+// Boolean components
+// TODO: - Break these up into their own files
+
+const BooleanQuestion = (props) => {
+  const survey = props.survey;
+  const answersMap = survey.answers.map((answer) => {
+    return {
+      id: answer,
+      title: answer,
+    };
+  });
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const renderItem = (item) => {
+    return <Radio>{item.title}</Radio>;
+  };
+
+  return (
+    <Layout
+      style={{
+        justifyContent: 'flex-start',
+        height: '80%',
+        width: '90%',
+      }}>
+      <ScrollView indicatorStyle="white">
+        <RadioGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+          {answersMap.map((answerObject) => {
+            return renderItem(answerObject);
+          })}
+        </RadioGroup>
+        <Button
+          onPress={() => props.next(answersMap[selectedIndex].title)}
+          appearance="outline"
+          size="giant"
+          status="primary">
+          Next
+        </Button>
+      </ScrollView>
+    </Layout>
+  );
+};
+
+const BooleanListQuestion = (props) => {
+  const [listItems, setListItems] = React.useState<string[]>([]);
+
+  const survey = props.survey;
+  const answersMap = survey.answers.map((answer) => {
+    return {
+      id: answer,
+      title: answer,
+    };
+  });
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const renderItem = (item) => {
+    return <Radio>{item.title}</Radio>;
+  };
+
+  const itemAdded = (item) => {
+    listItems.push(item as string);
+    console.log(listItems);
+    setListItems([...listItems]);
+  };
+
+  return (
+    <SafeAreaView
+      style={{
+        justifyContent: 'flex-start',
+        width: '90%',
+        flex: 1,
+      }}>
+      <ScrollView indicatorStyle="white">
+        <RadioGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+          {answersMap.map((answerObject) => {
+            return renderItem(answerObject);
+          })}
+        </RadioGroup>
+        <Layout
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}>
+          <Layout
+            style={{
+              height: 80,
+              width: '100%',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+            }}>
+            <Text category="h4">List Answers</Text>
+          </Layout>
+          <ListInput itemAdded={itemAdded} />
+          {console.log('LIST:', listItems)}
+          {listItems.map((listItem) => {
+            return <ListInput itemAdded={itemAdded} />;
+          })}
+          <Button
+            style={{width: '100%'}}
+            onPress={() =>
+              props.next(answersMap[selectedIndex].title, listItems)
+            }
+            appearance="outline"
+            size="giant"
+            status="primary">
+            Next
+          </Button>
+        </Layout>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

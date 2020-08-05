@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "955069806152",
+    "firebase_url": "https://betterfit-207d6.firebaseio.com",
+    "project_id": "betterfit-207d6",
+    "storage_bucket": "betterfit-207d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955069806152:android:8c5c22ec0341459b078a7d",
+        "android_client_info": {
+          "package_name": "com.BetterFit.FitAndroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955069806152-tk4u14ep48p3vt9rqmdtighc18q4ee7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQkEFwJFgWzJI8W6BAzE9_Jd7bIRR4BPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955069806152-tk4u14ep48p3vt9rqmdtighc18q4ee7i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "955069806152-a3uq0kd0p52f113tngpnn59gakf5tn5b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.BetterFit.Fit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

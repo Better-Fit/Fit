@@ -43,6 +43,7 @@ const Dashboard = ({navigation}) => {
 
   const [pre, setPre] = React.useState(false);
   const [post, setPost] = React.useState(false);
+  const [covid, setCovid] = React.useState(false);
   const currentDay = new Date().getDate();
 
   React.useEffect(() => {
@@ -58,6 +59,12 @@ const Dashboard = ({navigation}) => {
     getItemFromCache('post').then((lastSurveyDay) => {
       if (lastSurveyDay === currentDay) {
         setPost(true);
+      }
+    });
+
+    getItemFromCache('covid').then((lastSurveyDay) => {
+      if (lastSurveyDay === currentDay) {
+        setCovid(true);
       }
     });
   };
@@ -78,6 +85,10 @@ const Dashboard = ({navigation}) => {
     <Text style={styles.bannerText}>
       No post training surveys at this time 🎉
     </Text>
+  );
+
+  const noCovidSurvey = (
+    <Text style={styles.bannerText}>No Covid-19 surveys at this time 🎉</Text>
   );
 
   const preSurvey = (
@@ -110,6 +121,21 @@ const Dashboard = ({navigation}) => {
     </Button>
   );
 
+  const covidSurvey = (
+    <Button
+      style={styles.buttonStyle}
+      size="giant"
+      appearance="outline"
+      status="primary"
+      onPress={() => {
+        navigation.navigate('SurveyStack', {
+          surveyType: 'covid',
+        });
+      }}>
+      Covid-19 Survey 😷
+    </Button>
+  );
+
   const signOutButton = (
     <Button
       style={styles.buttonStyle}
@@ -132,6 +158,9 @@ const Dashboard = ({navigation}) => {
         </Layout>
         <Layout style={{width: '90%', height: 100}}>
           {post ? noPostSurvey : postSurvey}
+        </Layout>
+        <Layout style={{width: '90%', height: 100}}>
+          {covid ? noCovidSurvey : covidSurvey}
         </Layout>
         <Layout style={{width: '90%', height: 100}}>{signOutButton}</Layout>
       </Layout>

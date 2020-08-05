@@ -2,26 +2,24 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Surveys} from '../Templates/Surveys';
 import {SurveyQuestion} from './SurveyQuestion';
-import AuthService from '../Services/auth.service';
+import SurveyService from '../Services/SurveyService';
 import SurveySubmission from '../Models/SurveySubmission';
+import {Answer, Response} from '../Models/Response';
 
 const {Navigator, Screen} = createStackNavigator();
 
-const responses = {};
-
 export const SurveyStack = ({navigation, route}) => {
-  const addResponse = (response, index) => {
+  let responses = {};
+  const addResponse = (response: Answer, index: number) => {
     responses[index] = response;
   };
-  const submitSurvey = async (surveyType) => {
-    let surveyAnswers = Object.keys(responses).map((key) => {
-      return responses[key];
-    });
-    await AuthService.submitSurvey(
-      new SurveySubmission(surveyAnswers, surveyType),
-    );
+  const submitSurvey = async (surveyType: string) => {
+    const response = new Response(responses);
+    console.log(response);
+    return SurveyService.sendResponse(response);
   };
   const surveyLength = Surveys[route.params.surveyType].length;
+
   return (
     <Navigator headerMode="none">
       {Surveys[route.params.surveyType].map((survey, index) => (

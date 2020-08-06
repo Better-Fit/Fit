@@ -19,6 +19,7 @@
 		627D45AA97083E0C002E3B3C /* libPods-Fit-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F630E29E87F410C2979BD3E3 /* libPods-Fit-tvOSTests.a */; };
 		638DD64FC5C0C3173EFFF37F /* libPods-Fit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6819516DF51C59BC1EFA5DBA /* libPods-Fit.a */; };
 		7FB36C1824B42C4B00AA81CB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FB36C1724B42C3E00AA81CB /* GoogleService-Info.plist */; };
+		88A8665F24DBE1E0008989F0 /* Cloud Fit White.png in Resources */ = {isa = PBXBuildFile; fileRef = 88A8665E24DBE1E0008989F0 /* Cloud Fit White.png */; };
 		89AD928724CF9702B3C6B945 /* libPods-Fit-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAB7B7592B08816570B52718 /* libPods-Fit-tvOS.a */; };
 		E3EEB5B87104F40141BF1006 /* libPods-Fit-FitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8033A01B72E25BF3E29C56CC /* libPods-Fit-FitTests.a */; };
 /* End PBXBuildFile section */
@@ -45,7 +46,7 @@
 		00E356EE1AD99517003FC87E /* FitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* FitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FitTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* SF AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SF AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Cloud Fit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloud Fit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Fit/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Fit/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -61,6 +62,7 @@
 		77B4B9F679EF724BF357A471 /* Pods-Fit-FitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fit-FitTests.release.xcconfig"; path = "Target Support Files/Pods-Fit-FitTests/Pods-Fit-FitTests.release.xcconfig"; sourceTree = "<group>"; };
 		7FB36C1724B42C3E00AA81CB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8033A01B72E25BF3E29C56CC /* libPods-Fit-FitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fit-FitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		88A8665E24DBE1E0008989F0 /* Cloud Fit White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cloud Fit White.png"; sourceTree = "<group>"; };
 		9876DD63CA8CFC54881FC908 /* Pods-Fit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fit.release.xcconfig"; path = "Target Support Files/Pods-Fit/Pods-Fit.release.xcconfig"; sourceTree = "<group>"; };
 		C42749155FEF93B01EA751A8 /* Pods-Fit-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fit-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Fit-tvOSTests/Pods-Fit-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C98AD124C6DFF8772C5F1172 /* Pods-Fit-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fit-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Fit-tvOS/Pods-Fit-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				88A8665E24DBE1E0008989F0 /* Cloud Fit White.png */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -192,7 +195,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SF AI.app */,
+				13B07F961A680F5B00A75B9A /* Cloud Fit.app */,
 				00E356EE1AD99517003FC87E /* FitTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* Fit-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* Fit-tvOSTests.xctest */,
@@ -240,7 +243,7 @@
 			);
 			name = Fit;
 			productName = Fit;
-			productReference = 13B07F961A680F5B00A75B9A /* SF AI.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Cloud Fit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* Fit-tvOS */ = {
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				88A8665F24DBE1E0008989F0 /* Cloud Fit White.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7FB36C1824B42C4B00AA81CB /* GoogleService-Info.plist in Resources */,
 			);
@@ -662,7 +666,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.BetterFit.BetterFit;
-				PRODUCT_NAME = "SF AI";
+				PRODUCT_NAME = "Cloud Fit";
 				PROVISIONING_PROFILE_SPECIFIER = "SF AI Beta";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -688,7 +692,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.BetterFit.BetterFit;
-				PRODUCT_NAME = "SF AI";
+				PRODUCT_NAME = "Cloud Fit";
 				PROVISIONING_PROFILE_SPECIFIER = "SF AI Beta";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

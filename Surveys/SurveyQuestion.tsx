@@ -57,8 +57,6 @@ export const SurveyQuestion = ({navigation, route}) => {
     const surveyLength = route.params.surveyLength;
     const submitSurvey = route.params.submitSurvey;
 
-    console.log('SCREEN_RESPONSE:', response, list);
-
     let answer: Answer;
 
     if (response || survey.optional) {
@@ -118,13 +116,13 @@ export const SurveyQuestion = ({navigation, route}) => {
             <></>
           )}
 
-          {survey.type == ResponseType.QUESTIONAIRRE ? (
+          {survey.type == ResponseType.QUESTIONNAIRE ? (
             <Questionairre survey={survey} next={next} />
           ) : (
             <></>
           )}
 
-          {survey.type == ResponseType.QUESTIONAIRRE_LIST ? (
+          {survey.type == ResponseType.QUESTIONNAIRELIST ? (
             <QuestionairreList survey={survey} next={next} />
           ) : (
             <></>

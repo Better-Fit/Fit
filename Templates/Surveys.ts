@@ -45,7 +45,7 @@ export const Surveys = {
     {
       question:
         'In the past 72 hours, have you experienced any of the following symptoms?',
-      type: ResponseType.QUESTIONAIRRE,
+      type: ResponseType.QUESTIONNAIRE,
       answers: [
         'Shortness of Breath or Difficulty Breathing',
         'Cough',

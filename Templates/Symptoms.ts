@@ -47,4 +47,8 @@ export const symptoms = [
     level: 12,
     message: 'Fatigue',
   },
+  {
+    level: 13,
+    message: 'None',
+  },
 ];

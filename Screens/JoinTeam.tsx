@@ -92,7 +92,6 @@ const JoinTeam = ({navigation, route}) => {
           }}>
           <Layout style={{height: 90, width: '80%'}}>
             <Input
-              keyboardType="numeric"
               size="large"
               value={joinCode}
               label="Join Code"

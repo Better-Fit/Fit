@@ -22,6 +22,7 @@ const Dashboard = ({navigation}) => {
       fontSize: 18,
       color: 'darkgrey',
       paddingVertical: '5%',
+      alignSelf: 'center',
     },
     surveyButton: {
       flexDirection: 'row',

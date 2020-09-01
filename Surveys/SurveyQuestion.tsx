@@ -2,7 +2,7 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView, StyleSheet, FlatList} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   Input,
   Icon,
@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   CheckBox as KittenCheckBox,
+  Spinner,
 } from '@ui-kitten/components';
 import {Difficulties} from '../Templates/Difficulties';
 import {Feelings} from '../Templates/Feelings';
@@ -323,7 +324,6 @@ const Questionairre = (props) => {
 
   const selectedAnswers: string[] = [];
   const addSelectedAnswer = (answer: string) => {
-
     if (selectedAnswers.indexOf(answer) === -1) {
       selectedAnswers.push(answer);
     }
@@ -544,6 +544,7 @@ const ListInput = (props) => {
           }}>
           <TextInput
             style={{
+              color: '#000000',
               borderWidth: 1,
               borderColor: '#3366FF',
               height: 40,

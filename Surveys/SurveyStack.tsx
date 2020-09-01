@@ -11,10 +11,9 @@ const {Navigator, Screen} = createStackNavigator();
 var responses = {};
 
 export const SurveyStack = ({navigation, route}) => {
-  
   const addResponse = (response: Answer, index: number) => {
     responses[index] = response;
-    console.log('😚',responses);
+    console.log('😚', responses);
   };
   const submitSurvey = async (surveyType: string) => {
     let mappedResponses = Object.keys(responses).map((key) => responses[key]);
